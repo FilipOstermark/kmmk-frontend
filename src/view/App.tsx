@@ -10,15 +10,15 @@ import { NewAlbum } from './NewAlbum'
 const Layout: () => JSX.Element = () => {
   return (
     <>
-    <header>
-        <h1>Klagumurens Musikklubb</h1>
+      <header>
+        <h1>KM📀MK</h1>
         <nav>
           <ul>
             <li>
               <Link to='/top-list'>Topplista</Link>
             </li>
             <li>
-              <Link to='/new-album'>Lägg till album</Link>
+              <Link to='/new-album'>+ Nytt album</Link>
             </li>
           </ul>
         </nav>
@@ -27,10 +27,6 @@ const Layout: () => JSX.Element = () => {
       <article>
         <Outlet />
       </article>
-      
-      <footer>
-        <p>INSERT LÄNK TILL PDF</p>
-      </footer>
     </>
   )
 }
