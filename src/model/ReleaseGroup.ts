@@ -1,11 +1,13 @@
-interface ReleaseGroup {
+import { ArtistCredit } from "src/model/ArtistCredit"
+
+export interface ReleaseGroup {
   "id": string,
-  "type-id": string,
   "score": number,
-  "primary-type-id": string,
   "count": number,
   "title": string,
-  "first-release-date": string,
+  "first-release-date": string | undefined,
+  "type-id": string,
   "primary-type": string,
+  "primary-type-id": string,
   "artist-credit": ArtistCredit[]
 }

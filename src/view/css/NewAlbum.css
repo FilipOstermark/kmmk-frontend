@@ -14,7 +14,7 @@
   max-height: 60vh;
 
   padding: 2rem;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.1);
   background-size: cover;
 
   border-radius: 2rem;
@@ -29,7 +29,7 @@
   right: 0;
   position: absolute;
   background-size: cover;
-  filter: blur(50px);
+  filter: blur(200px);
   opacity: 0.2;
 
   z-index: -1;
@@ -83,14 +83,30 @@
 }
 
 .search-suggestion {
+  position: relative;
   display: flex;
   justify-content: center;
 
+  width: 100%;
+  height: 100%;
   aspect-ratio: 1/1;
 
   background-color: rgba(0, 0, 0, 0.25);
-  background-size: cover;
   border-radius: 1rem;
+}
+
+.search-suggestion-coverart {
+  position: absolute;
+  background-size: cover;
+ 
+  width: 100%;
+  height: 100%;
+
+  border-radius: 1rem;
+}
+
+.search-suggestion-coverart:hover {
+  opacity: 0.15;
 }
 
 .search-suggestion-info {
@@ -103,14 +119,15 @@
   height: 80%;
   margin: auto;
   
-  background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(50px);
+  backdrop-filter: blur(10px);
   border-radius: 50%;
+
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .search-suggestion-info:hover {
-  background-color: rgba(255, 255, 255, 0.6);
-  color: black;
+  opacity: 1;
+  z-index: auto;
 }
 
 .search-suggestion-info > * {

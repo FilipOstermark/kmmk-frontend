@@ -1,11 +1,11 @@
 export interface Album {
-  id: string,
+  id: string, // Use MBID if available
   title: string,
-  releaseDate: string | undefined,
-  rating: number | undefined,
-  discussionSummary: string | undefined,
-  bestSongTitle: string | undefined,
-  worstSongTitle: string | undefined,
-  occasion: string | undefined,
-  discussionDate: string | undefined
+  releaseYear: string
+  rating: number
+  discussionSummary: string
+  bestSongTitle: string
+  worstSongTitle: string
+  occasion: string
+  discussionDate: string
 }

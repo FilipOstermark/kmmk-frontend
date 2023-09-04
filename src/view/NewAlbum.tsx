@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react"
+import { Album } from "src/model/Album"
+import { ReleaseGroup } from "src/model/ReleaseGroup"
+import { type ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
+import { albumRepositoryInstance } from "src/repository/AlbumRepository"
 import { useDebounce } from "usehooks-ts"
+import { RatingSelector } from "./RatingSelector"
 import { SearchSuggestion } from "./SearchSuggestion"
 import './css/NewAlbum.css'
-import { RatingSelector } from "./RatingSelector"
 
 export const NewAlbum: () => JSX.Element = () => {
   const [searchResults, setSearchResults] = useState<ReleaseGroupSearchResult>()
@@ -10,6 +14,10 @@ export const NewAlbum: () => JSX.Element = () => {
   const [albumTitle, setAlbumTitle] = useState("")
   const [artistName, setArtistName] = useState("")
   const [releaseYear, setReleaseYear] = useState<number>()
+  const [summary, setSummary] = useState("")
+  const [bestSong, setBestSong] = useState("")
+  const [worstSong, setWorstSong] = useState("")
+  const [occasion, setOccasion] = useState("")
   const [viktorUserRating, setViktorUserRating] = useState<number>()
   const [eliasUserRating, setEliasUserRating] = useState<number>()
   const [filipUserRating, setFilipUserRating] = useState<number>()
@@ -38,8 +46,9 @@ export const NewAlbum: () => JSX.Element = () => {
     
     const artist = selectedReleaseGroup["artist-credit"]
       .map(cred => cred.name).join(", ")
-    const year = parseInt(selectedReleaseGroup["first-release-date"]
-      .split("-")[0])
+    const year = parseInt(
+      (selectedReleaseGroup["first-release-date"] ?? "0").split("-")[0]
+    )
 
     setAlbumTitle(selectedReleaseGroup.title)
     setArtistName(artist)
@@ -89,8 +98,9 @@ export const NewAlbum: () => JSX.Element = () => {
         <div className="search-results">
           {
             searchResults?.["release-groups"].map(
-              releaseGroup => (
+              (releaseGroup: ReleaseGroup) => (
                 <SearchSuggestion 
+                key={releaseGroup.id}
                 releaseGroup={releaseGroup} 
                 setSelectedReleaseGroup={setSelectedReleaseGroup} />
               )
@@ -108,6 +118,23 @@ export const NewAlbum: () => JSX.Element = () => {
       ) / 100
   }
 
+  const submitNewAlbum = async () => {
+    // TODO Fix this
+    const newAlbum: Album = {
+      id: selectedReleaseGroup?.id ?? "",
+      title: albumTitle,
+      releaseYear: releaseYear?.toString() ?? "-1",
+      bestSongTitle: bestSong,
+      worstSongTitle: worstSong,
+      discussionDate: "1992-01-01",
+      discussionSummary: summary,
+      rating: parseFloat(averageUserRating as string),
+      occasion: occasion
+    }
+
+    await albumRepositoryInstance.add(newAlbum)
+  }
+
   return (
     <div className="new-album-page">
       <h2>Nytt album</h2>
@@ -119,47 +146,81 @@ export const NewAlbum: () => JSX.Element = () => {
         
         <div className="new-album-input-section">
 
-          <div className="new-album-input">
-            <h2>Titel</h2>
-            <input 
-              type="search" 
-              value={albumTitle} 
-              onChange={e => { setAlbumTitle(e.target.value) }}/>
-          </div>
-          
-          <div className="new-album-input">
-            <h2>Artist</h2>
-            <input 
-              type="search" 
-              value={artistName} 
-              onChange={e => { setArtistName(e.target.value) }}/>
-          </div>
+          <form onSubmit={() => { submitNewAlbum().catch(() => { console.error('error') }) }}>
 
-          <div className="new-album-input">
-            <h2>Utgivningsår</h2>
-            <input 
-              type="number" 
-              value={releaseYear} 
-              min={0} 
-              max={2100} 
-              onChange={e => { setReleaseYear(parseInt(e.target.value)) }}/>
-          </div>
+            <div className="new-album-input">
+              <h2>Titel</h2>
+              <input 
+                type="search" 
+                value={albumTitle} 
+                onChange={e => { setAlbumTitle(e.target.value) }}/>
+            </div>
+            
+            <div className="new-album-input">
+              <h2>Artist</h2>
+              <input 
+                type="search" 
+                value={artistName} 
+                onChange={e => { setArtistName(e.target.value) }}/>
+            </div>
 
-          <div className="new-album-input">
-            <h2>Betyg ({averageUserRating}/10)</h2>
-            <RatingSelector 
-              ratingUserName="Viktor" 
-              onValueChange={value => { setViktorUserRating(value) }} />
-            <RatingSelector 
-              ratingUserName="Elias" 
-              onValueChange={value => { setEliasUserRating(value) }} />
-            <RatingSelector 
-              ratingUserName="Filip" 
-              onValueChange={value => { setFilipUserRating(value) }} />
-          </div>
+            <div className="new-album-input">
+              <h2>Utgivningsår</h2>
+              <input 
+                type="number" 
+                value={releaseYear} 
+                min={0} 
+                max={2100} 
+                onChange={e => { setReleaseYear(parseInt(e.target.value)) }}/>
+            </div>
 
-          <button>Spara</button>
+            <div className="new-album-input">
+              <h2>Bästa låt</h2>
+              <input 
+                type="text" 
+                value={bestSong} 
+                onChange={e => { setBestSong(e.target.value) }}/>
+            </div>
+            
+            <div className="new-album-input">
+              <h2>Sämsta låt</h2>
+              <input 
+                type="text" 
+                value={worstSong} 
+                onChange={e => { setWorstSong(e.target.value) }}/>
+            </div>
 
+            <div className="new-album-input">
+              <h2>Sammanfattning</h2>
+              <input 
+                type="text" 
+                value={summary} 
+                onChange={e => { setSummary(e.target.value) }}/>
+            </div>
+            
+            <div className="new-album-input">
+              <h2>Bästa lyssningstillfälle</h2>
+              <input 
+                type="text" 
+                value={occasion} 
+                onChange={e => { setOccasion(e.target.value) }}/>
+            </div>
+
+            <div className="new-album-input">
+              <h2>Betyg ({averageUserRating}/10)</h2>
+              <RatingSelector 
+                ratingUserName="Viktor" 
+                onValueChange={value => { setViktorUserRating(value) }} />
+              <RatingSelector 
+                ratingUserName="Elias" 
+                onValueChange={value => { setEliasUserRating(value) }} />
+              <RatingSelector 
+                ratingUserName="Filip" 
+                onValueChange={value => { setFilipUserRating(value) }} />
+            </div>
+
+            <button type="submit">Spara</button>
+          </form>
         </div>
 
         <SearchResults searchResults={searchResults} />

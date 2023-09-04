@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/require-await */
 import { Album } from "src/model/Album"
 
 export interface AlbumRepository {
@@ -6,38 +7,31 @@ export interface AlbumRepository {
   remove: (albumId: string) => Promise<void>
 }
 
-// TODO Remove this when real DB available
-const dummyData: Array<Album> = [
-  {
-    id: "1",
-    title: "Purple Rain",
-    releaseYear: 1984,
-    rating: 6.5,
-    discussionDate: "2023-08-30"
-  },
-  {
-    id: "2",
-    title: "FM!",
-    releaseYear: 2018
-  }
-]
+const KEY_LOCAL_STORAGE = "ALBUM_REPOSITORY"
 
 export class AlbumRepositoryImpl implements AlbumRepository {
 
-  private albums: Array<Album> = dummyData
-
   public getAll = async (): Promise<Album[]> => {
-    return this.albums
+    try {
+      return JSON.parse(
+        localStorage.getItem(KEY_LOCAL_STORAGE) ?? "[]"
+      ) as Album[]
+    } catch (error) {
+      console.error("Failed to load albums", error)
+      return []
+    }
   }
 
   public add = async (album: Album) => {
-    this.albums.push(album)
+    const currentItems = await this.getAll()
+    currentItems.push(album)
+    localStorage.setItem(KEY_LOCAL_STORAGE, JSON.stringify(currentItems))
   }
 
   public remove = async (albumId: string) => {
-    this.albums = this.albums.filter(album => {
-      return album.id != albumId
-    })
+    let currentItems = await this.getAll()
+    currentItems = currentItems.filter(album => album.id != albumId)
+    localStorage.setItem(KEY_LOCAL_STORAGE, JSON.stringify(currentItems))
   }
 }
 

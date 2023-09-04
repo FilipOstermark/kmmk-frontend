@@ -6,11 +6,9 @@ export interface AlbumPageProps {
 
 export const AlbumPage: (props: AlbumPageProps) => JSX.Element = ({
   album
-}: AlbumPageProps) => {
-  return (
+}: AlbumPageProps) => (
     <>
     <h1>{album.title}</h1>
-    <h2>({album.releaseDate})</h2>
+    <h2>({album.releaseYear})</h2>
     </>
   )
-}

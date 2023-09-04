@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #000000;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -39,17 +39,17 @@ div::-webkit-scrollbar-thumb {
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #f1cb72;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #db9033;
+  cursor: pointer;
 }
 
 body {
   margin: 0;
   display: flex;
-  min-width: 100vw;
   min-height: 100vh;
 }
 
@@ -75,6 +75,14 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+ol {
+  list-style-position: inside;
+  text-align: center;
+  vertical-align: middle;
+  list-style: decimal-leading-zero;
+  font-weight: 600;
 }
 
 @media (prefers-color-scheme: light) {
