@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Album } from "src/model/Album"
-import { getCoverArtUrl } from "src/util/util"
+import { getAverageRating, getCoverArtUrl, roundToDecimals } from "src/util/util"
 import "src/view/css/TopListItem.css"
 
 export interface AlbumTopListItemProps {
@@ -12,9 +12,8 @@ export const AlbumTopListItem: (
 ) => JSX.Element = ({album}: AlbumTopListItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const {title, releaseYear, rating} = album
-
-  const ratingDisplay: string = rating ? `${rating}/10` : '-/10'
+  const averageUserRating: number = roundToDecimals(getAverageRating(album), 2)
+  const ratingDisplay: string = `${averageUserRating}/10`
   const extraInfoDisplay = isExpanded ? "block" : "none"
   
   function toggleExpanded() {
@@ -27,14 +26,15 @@ export const AlbumTopListItem: (
 
       <div className="top-list-item-info">
         
-        <h3>{title}</h3>
-        <p>{releaseYear}</p>
+        <h3>{album.title}</h3>
+        <p>{album.releaseYear}</p>
         <div className="top-list-item-rating">
           <span className="top-list-item-rating-star material-symbols-rounded">star</span>
           <p className="top-list-item-rating-text">{ratingDisplay}</p>
         </div>
 
-        <div style={{ display: extraInfoDisplay }}>
+        <div className="top-list-item-info-extra" style={{ display: extraInfoDisplay }}>
+          <hr />
           <p>Bästa låt: {album.bestSongTitle}</p>
           <p>Sämsta låt: {album.worstSongTitle}</p>
           <p>Lyssningstillfälle: {album.occasion}</p>

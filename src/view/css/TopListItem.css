@@ -58,6 +58,19 @@
   padding: 0;
 }
 
+.top-list-item-info-extra {
+  padding: 1rem 0;
+}
+
+.top-list-item-info-extra > hr {
+  width: 20%;
+  opacity: 0.5;
+}
+
+.top-list-item-info-extra > p {
+  margin: 0.5rem 0;
+}
+
 .top-list-item-expand-sign {
   font-size: 2rem;
 }

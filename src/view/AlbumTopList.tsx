@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { type Album } from "src/model/Album"
 import { albumRepositoryInstance } from "src/repository/AlbumRepository"
 import { sortAlbumsByRating } from "src/util/util"
@@ -26,7 +26,10 @@ export const AlbumTopList: () => JSX.Element = () => {
 
   return (
     <>
-      <h2>Topplista</h2>
+      <div className="new-album-page-header">
+        <h2>Topplista</h2>
+        <Link to='/new-album'>&gt; Nytt album</Link>
+      </div>
       <a onClick={() => { navigate('/new-album') }}>+ Nytt album</a>
       <ol>{albumListDisplay}</ol>
       <a onClick={() => { navigate('/new-album') }}>+ Nytt album</a>

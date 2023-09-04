@@ -11,6 +11,7 @@ const App: () => JSX.Element = () =>
         <Route path='/' element={<AppLayout />} >
           <Route index path='' element={<AlbumTopList />} />
           <Route path='new-album' element={<NewAlbum />} />
+          <Route path='*' element={<AlbumTopList />} />
         </Route>
       </Routes>
     </BrowserRouter>

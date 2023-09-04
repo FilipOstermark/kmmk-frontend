@@ -129,7 +129,11 @@ export const NewAlbum: () => JSX.Element = () => {
       worstSongTitle: worstSong,
       discussionDate: "1992-01-01",
       discussionSummary: summary,
-      rating: parseFloat(averageUserRating as string),
+      ratings: [
+        viktorUserRating ?? 0, 
+        eliasUserRating ?? 0, 
+        filipUserRating ?? 0
+      ],
       occasion: occasion
     }
 
@@ -155,6 +159,7 @@ export const NewAlbum: () => JSX.Element = () => {
             <div className="new-album-input">
               <h2>Titel</h2>
               <input 
+                required
                 type="search" 
                 value={albumTitle} 
                 onChange={e => { setAlbumTitle(e.target.value) }}/>
@@ -163,6 +168,7 @@ export const NewAlbum: () => JSX.Element = () => {
             <div className="new-album-input">
               <h2>Artist</h2>
               <input 
+                required
                 type="search" 
                 value={artistName} 
                 onChange={e => { setArtistName(e.target.value) }}/>
@@ -171,6 +177,7 @@ export const NewAlbum: () => JSX.Element = () => {
             <div className="new-album-input">
               <h2>Utgivningsår</h2>
               <input 
+                required
                 type="number" 
                 value={releaseYear} 
                 min={0} 
@@ -181,6 +188,7 @@ export const NewAlbum: () => JSX.Element = () => {
             <div className="new-album-input">
               <h2>Bästa låt</h2>
               <input 
+                required
                 type="text" 
                 value={bestSong} 
                 onChange={e => { setBestSong(e.target.value) }}/>
@@ -189,6 +197,7 @@ export const NewAlbum: () => JSX.Element = () => {
             <div className="new-album-input">
               <h2>Sämsta låt</h2>
               <input 
+                required
                 type="text" 
                 value={worstSong} 
                 onChange={e => { setWorstSong(e.target.value) }}/>
@@ -197,6 +206,7 @@ export const NewAlbum: () => JSX.Element = () => {
             <div className="new-album-input">
               <h2>Sammanfattning</h2>
               <input 
+                required
                 type="text" 
                 value={summary} 
                 onChange={e => { setSummary(e.target.value) }}/>
@@ -205,6 +215,7 @@ export const NewAlbum: () => JSX.Element = () => {
             <div className="new-album-input">
               <h2>Bästa lyssningstillfälle</h2>
               <input 
+                required
                 type="text" 
                 value={occasion} 
                 onChange={e => { setOccasion(e.target.value) }}/>

@@ -9,10 +9,18 @@ export const sortAlbumsByRating = (
 ): Album[] => {
   const arrayCopy: Album[] = [...array]
   
-  arrayCopy.sort((a, b) => b.rating - a.rating)
+  arrayCopy.sort((a, b) => getAverageRating(b) - getAverageRating(a))
   if (order === "asc") {
     arrayCopy.reverse()
   }
 
   return arrayCopy
 }
+
+export const roundToDecimals = (value: number, decimals: number): number => {
+  const exp = Math.pow(10, decimals)
+  return Math.round(value * exp) / exp
+}
+
+export const getAverageRating = ({ ratings }: Album): number => 
+  ratings.reduce((a, b) => a + b) / ratings.length

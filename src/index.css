@@ -42,9 +42,16 @@ a {
   color: #f1cb72;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #fc9a23;
   cursor: pointer;
+}
+
+hr {
+  border: transparent;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  margin: 1rem;
 }
 
 body {
@@ -78,11 +85,33 @@ button:focus-visible {
 }
 
 ol {
-  list-style-position: inside;
-  text-align: center;
-  vertical-align: middle;
-  list-style: decimal-leading-zero;
+  position: relative;
   font-weight: 600;
+  counter-reset: li-counter;
+  list-style-type: none;
+
+  margin: 0;
+  padding-left: 3rem;
+}
+
+ol > li {
+    position: relative;
+}
+
+ol > li::before {
+    position: absolute;
+    left: -1.33em;
+    bottom: 1rem;
+
+    width: 3rem;
+
+    font-size: 1.25rem;
+
+    text-align: left;
+    color: #f5f5f5;
+
+    content: counter(li-counter, decimal-leading-zero)".";
+    counter-increment: li-counter;
 }
 
 @media (prefers-color-scheme: light) {
