@@ -20,6 +20,10 @@ header {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+header > img:hover {
+  cursor: pointer;
+}
+
 footer {
   position: fixed;
   bottom: 0;

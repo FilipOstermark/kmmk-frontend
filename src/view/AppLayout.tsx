@@ -1,11 +1,19 @@
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet, useNavigate } from "react-router-dom"
 import KmmkLogo from "src/assets/kmmk-logo.png"
 import RuleBook from "src/assets/MoHU.pdf"
 
-export const AppLayout: () => JSX.Element = () => (
+export const AppLayout: () => JSX.Element = () => {
+  const navigate = useNavigate()
+  
+  return (
     <>
       <header>
-        <img width={200} src={KmmkLogo}></img>
+        <img 
+          width={200} 
+          src={KmmkLogo} 
+          onClick={() => { navigate('/') }}
+          alt="KMMK Logo"
+          ></img>
         <nav>
           <ul>
             <li>
@@ -26,3 +34,4 @@ export const AppLayout: () => JSX.Element = () => (
       </article>
     </>
   )
+}

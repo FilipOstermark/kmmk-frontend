@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import { Album } from "src/model/Album"
 import { ReleaseGroup } from "src/model/ReleaseGroup"
 import { type ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
@@ -137,7 +138,10 @@ export const NewAlbum: () => JSX.Element = () => {
 
   return (
     <div className="new-album-page">
-      <h2>Nytt album</h2>
+      <div className="new-album-page-header">
+        <Link to='/'>Topplista &gt;</Link>
+        <h2>Nytt album</h2>
+      </div>
 
       <div className="new-album-page-content" >
         <div 
