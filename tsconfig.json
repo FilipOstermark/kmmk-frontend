@@ -19,12 +19,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
     "paths": {
       "src/*": [
         "./src/*"
       ]
     }
   },
-  "include": ["src"],
+  "include": ["src", "*.ts", ".prettierrc"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

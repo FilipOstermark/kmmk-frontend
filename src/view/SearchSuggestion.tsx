@@ -6,7 +6,7 @@ export interface SearchSuggestionProps {
 export const SearchSuggestion: (props: SearchSuggestionProps) => JSX.Element = (
   { releaseGroup, setSelectedReleaseGroup }: SearchSuggestionProps
 ) => {
-  const releaseYear = releaseGroup["first-release-date"]?.split("-")[0]
+  const releaseYear = releaseGroup["first-release-date"].split("-")[0]
   const artistCredit = releaseGroup["artist-credit"]
   const artist = artistCredit.map(cred => cred.name).join(" ")
   const img = `http://coverartarchive.org/release-group/${releaseGroup.id}/front-250`

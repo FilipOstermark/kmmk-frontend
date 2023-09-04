@@ -37,8 +37,8 @@
 
 .new-album-input-section {
   text-align: left;
-  overflow-y: auto;
   scroll-behavior: smooth;
+  overflow: auto;
 }
 
 .new-album-input {
