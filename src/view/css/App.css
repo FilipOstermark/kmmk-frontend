@@ -3,9 +3,13 @@
 }
 
 #root {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+
   width: 100vw;
   margin: 0 auto;
   text-align: center;
+  max-height: 100vh;
 }
 
 header {
@@ -24,20 +28,12 @@ header > img:hover {
   cursor: pointer;
 }
 
-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 1);
-}
-
-nav {
+header > nav {
   display: flex;
   justify-content: end;
 }
 
-nav > ul {
+header > nav > ul {
   display: flex;
   flex-direction: column;
   list-style: none;

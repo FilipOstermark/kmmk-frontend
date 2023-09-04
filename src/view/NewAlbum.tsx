@@ -94,19 +94,21 @@ export const NewAlbum: () => JSX.Element = () => {
   const SearchResults: (props: SearchResultsProps) => JSX.Element = (
     { searchResults }
   ) => (
-      <div className="search-results-wrapper">
+      <div className="search-results-section">
         <h2>Förslag ({searchResults?.["release-groups"].length ?? 0})</h2>
-        <div className="search-results">
-          {
-            searchResults?.["release-groups"].map(
-              (releaseGroup: ReleaseGroup) => (
-                <SearchSuggestion 
-                key={releaseGroup.id}
-                releaseGroup={releaseGroup} 
-                setSelectedReleaseGroup={setSelectedReleaseGroup} />
+        <div className="search-results-scroll">
+          <div className="search-results">
+            {
+              searchResults?.["release-groups"].map(
+                (releaseGroup: ReleaseGroup) => (
+                  <SearchSuggestion 
+                  key={releaseGroup.id}
+                  releaseGroup={releaseGroup} 
+                  setSelectedReleaseGroup={setSelectedReleaseGroup} />
+                )
               )
-            )
-          }
+            }
+          </div>
         </div>
       </div>
     )
