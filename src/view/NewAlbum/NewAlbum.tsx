@@ -2,26 +2,31 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { Album } from "src/model/Album"
 import { ReleaseGroup } from "src/model/ReleaseGroup"
-import { type ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
+import { emptyReleaseGroupSearchResult, type ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
 import { albumRepositoryInstance } from "src/repository/AlbumRepository"
+import { URL_BACKEND_RELEASE_GROUP } from "src/util/constants"
 import { useDebounce } from "usehooks-ts"
+import './NewAlbum.css'
 import { RatingSelector } from "./RatingSelector"
 import { SearchSuggestion } from "./SearchSuggestion"
-import './css/NewAlbum.css'
 
 export const NewAlbum: () => JSX.Element = () => {
-  const [searchResults, setSearchResults] = useState<ReleaseGroupSearchResult>()
+  const [searchResults, setSearchResults] = useState<ReleaseGroupSearchResult>(
+    emptyReleaseGroupSearchResult()
+  )
   
   const [albumTitle, setAlbumTitle] = useState("")
   const [artistName, setArtistName] = useState("")
-  const [releaseYear, setReleaseYear] = useState<number>()
+  const [releaseYear, setReleaseYear] = useState<number>(0)
   const [summary, setSummary] = useState("")
   const [bestSong, setBestSong] = useState("")
   const [worstSong, setWorstSong] = useState("")
   const [occasion, setOccasion] = useState("")
-  const [viktorUserRating, setViktorUserRating] = useState<number>()
-  const [eliasUserRating, setEliasUserRating] = useState<number>()
-  const [filipUserRating, setFilipUserRating] = useState<number>()
+
+  // TODO Remove hardcoding
+  const [viktorUserRating, setViktorUserRating] = useState<number>(0)
+  const [eliasUserRating, setEliasUserRating] = useState<number>(0)
+  const [filipUserRating, setFilipUserRating] = useState<number>(0)
 
   const [selectedReleaseGroup, setSelectedReleaseGroup] = 
     useState<ReleaseGroup | undefined>()
@@ -62,7 +67,7 @@ export const NewAlbum: () => JSX.Element = () => {
   async function search(
     albumTitle: string, 
     artistName: string | undefined
-  ): Promise<ReleaseGroupSearchResult> {
+  ): Promise<void> {
 
     const queryParams = [
       `release:${albumTitle}`,
@@ -78,13 +83,11 @@ export const NewAlbum: () => JSX.Element = () => {
     const fullQueryParamterString = `?query=${encodedJoinedQuery}&limit=25`
 
     const response = await fetch(
-      `http://localhost:8081/${fullQueryParamterString}`
+      `${URL_BACKEND_RELEASE_GROUP}${fullQueryParamterString}`
     )
-    const contentJson = await response.json() as ReleaseGroupSearchResult
+    const contentJson = await response.json() as (ReleaseGroupSearchResult | undefined)
 
-    setSearchResults(contentJson)
-
-    return contentJson
+    setSearchResults(contentJson ?? emptyReleaseGroupSearchResult())
   }
 
   interface SearchResultsProps {
@@ -126,15 +129,24 @@ export const NewAlbum: () => JSX.Element = () => {
     const newAlbum: Album = {
       id: selectedReleaseGroup?.id ?? "",
       title: albumTitle,
-      releaseYear: releaseYear?.toString() ?? "-1",
+      releaseYear: releaseYear.toString(),
       bestSongTitle: bestSong,
       worstSongTitle: worstSong,
       discussionDate: "1992-01-01",
       discussionSummary: summary,
       ratings: [
-        viktorUserRating ?? 0, 
-        eliasUserRating ?? 0, 
-        filipUserRating ?? 0
+        {
+          userEmail: "viktor@placeholder.com",
+          rating: viktorUserRating
+        },
+        {
+          userEmail: "elias@placeholder.com",
+          rating: eliasUserRating
+        },
+        {
+          userEmail: "filip@placeholder.com",
+          rating: filipUserRating
+        },
       ],
       occasion: occasion
     }

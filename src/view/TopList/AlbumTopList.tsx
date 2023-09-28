@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { type Album } from "src/model/Album"
 import { albumRepositoryInstance } from "src/repository/AlbumRepository"
 import { sortAlbumsByRating } from "src/util/util"
-import { AlbumTopListItem } from "src/view/AlbumTopListItem"
+import { AlbumTopListItem } from "src/view/TopList/AlbumTopListItem"
 
 export const AlbumTopList: () => JSX.Element = () => {
   const [albumList, setAlbumList] = useState<Album[]>([])

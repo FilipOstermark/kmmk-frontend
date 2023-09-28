@@ -22,5 +22,6 @@ export const roundToDecimals = (value: number, decimals: number): number => {
   return Math.round(value * exp) / exp
 }
 
-export const getAverageRating = ({ ratings }: Album): number => 
-  ratings.reduce((a, b) => a + b) / ratings.length
+export const getAverageRating = ({ ratings }: Album): number => ratings
+  .map(rating => rating.rating)
+  .reduce((a, b) => a + b) / ratings.length

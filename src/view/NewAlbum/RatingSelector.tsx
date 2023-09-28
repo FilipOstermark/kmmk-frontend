@@ -1,5 +1,5 @@
 import { useState } from "react"
-import './css/RatingSelector.css'
+import './RatingSelector.css'
 
 export interface RatingStarProps {
   value: number
@@ -12,16 +12,16 @@ export const RatingStar: (props: RatingStarProps) => JSX.Element = (
   { value, selectedValue, setValue, setHoveredValue }: RatingStarProps
 ) => {
 
-  let starColor = (selectedValue && (selectedValue >= value)) ? 
+  const starColor = (selectedValue && (selectedValue >= value)) ? 
     "orange" : "whitesmoke"
 
   return (
     <span 
     className="material-symbols-rounded rating-selector-star" 
     style={{ color: starColor }}
-    onClick={() => setValue(value)}
-    onMouseOver={() => setHoveredValue(value)}
-    onMouseLeave={() => setHoveredValue(undefined)}>star</span>
+    onClick={() => { setValue(value) }}
+    onMouseOver={() => { setHoveredValue(value) }}
+    onMouseLeave={() => { setHoveredValue(undefined) }}>star</span>
   )
 }
 

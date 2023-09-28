@@ -6,3 +6,11 @@ export interface ReleaseGroupSearchResult {
   "offset": number,
   "release-groups": ReleaseGroup[]
 }
+
+export const emptyReleaseGroupSearchResult: () => ReleaseGroupSearchResult = 
+  () => ({
+    "created": '',
+    "count": 0,
+    "offset": 0,
+    "release-groups": []
+  })
