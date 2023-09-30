@@ -19,7 +19,7 @@ export const AlbumTopList: () => JSX.Element = () => {
   }, [])
 
   const albumListDisplay = albumList.map(album => (
-      <li key={album.id}>
+      <li key={album.mbid}>
         <AlbumTopListItem album={album} />
       </li>
     ))

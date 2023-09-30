@@ -22,7 +22,7 @@ export const AlbumTopListItem: (
 
   return (
     <div className="top-list-item" onClick={toggleExpanded}>
-      <img src={ getCoverArtUrl(album.id)} alt="Cover art"></img>
+      <img src={ getCoverArtUrl(album.mbid)} alt="Cover art"></img>
 
       <div className="top-list-item-info">
         

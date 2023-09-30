@@ -1,8 +1,9 @@
 import { Rating } from "./Rating"
 
 export interface Album {
-  id: string, // Use MBID if available
+  mbid: string,
   title: string,
+  artistName: string,
   releaseYear: string,
   ratings: Rating[],
   discussionSummary: string,

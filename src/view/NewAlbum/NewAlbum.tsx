@@ -127,8 +127,9 @@ export const NewAlbum: () => JSX.Element = () => {
   const submitNewAlbum = async () => {
     // TODO Fix this
     const newAlbum: Album = {
-      id: selectedReleaseGroup?.id ?? "",
+      mbid: selectedReleaseGroup?.id ?? "",
       title: albumTitle,
+      artistName: artistName,
       releaseYear: releaseYear.toString(),
       bestSongTitle: bestSong,
       worstSongTitle: worstSong,

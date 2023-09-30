@@ -30,7 +30,7 @@ export class AlbumRepositoryImpl implements AlbumRepository {
 
   public remove = async (albumId: string) => {
     let currentItems = await this.getAll()
-    currentItems = currentItems.filter(album => album.id != albumId)
+    currentItems = currentItems.filter(album => album.mbid != albumId)
     localStorage.setItem(KEY_LOCAL_STORAGE, JSON.stringify(currentItems))
   }
 }
