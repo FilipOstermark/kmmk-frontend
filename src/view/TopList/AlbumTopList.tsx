@@ -12,14 +12,15 @@ export const AlbumTopList: () => JSX.Element = () => {
   useEffect(() => {
     async function initAlbumList() {
       const albumList = await albumRepositoryInstance.getAll()
+      console.log("Album list: ", albumList)
       setAlbumList(sortAlbumsByRating(albumList))
     }
 
-    initAlbumList().catch(() => { console.error("Failed to init album list") })
+    initAlbumList().catch(error => { console.error("Failed to init album list", error) })
   }, [])
 
   const albumListDisplay = albumList.map(album => (
-      <li key={album.mbid}>
+      <li key={album.id}>
         <AlbumTopListItem album={album} />
       </li>
     ))

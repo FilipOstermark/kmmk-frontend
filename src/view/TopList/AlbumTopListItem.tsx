@@ -37,8 +37,8 @@ export const AlbumTopListItem: (
           <hr />
           <p>Bästa låt: {album.bestSongTitle}</p>
           <p>Sämsta låt: {album.worstSongTitle}</p>
-          <p>Lyssningstillfälle: {album.occasion}</p>
-          <p>Sammanfattning: {album.discussionSummary}</p>
+          <p>Lyssningstillfälle: {album.listeningOccasion}</p>
+          <p>Sammanfattning: {album.summary}</p>
         </div>
 
       </div>

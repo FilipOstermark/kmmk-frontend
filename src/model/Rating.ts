@@ -1,4 +1,6 @@
+import { User } from "./User"
+
 export interface Rating {
-  userEmail: string,
+  user: User,
   rating: number
 }

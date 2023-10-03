@@ -1,4 +1,5 @@
 export interface User {
-  email: string, // Unique - Functions as user ID
+  id: string | null,
+  email: string,
   name: string,
 }

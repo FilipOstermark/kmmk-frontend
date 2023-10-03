@@ -8,13 +8,15 @@ export const sortAlbumsByRating = (
   order: "asc" | "desc" = "desc"
 ): Album[] => {
   const arrayCopy: Album[] = [...array]
+  const ratedAlbums: Album[] = arrayCopy.filter(album => album.ratings.length != 0)
+  const unratedAlbums: Album[] = arrayCopy.filter(album => album.ratings.length == 0)
   
-  arrayCopy.sort((a, b) => getAverageRating(b) - getAverageRating(a))
+  ratedAlbums.sort((a, b) => getAverageRating(b) - getAverageRating(a))
   if (order === "asc") {
     arrayCopy.reverse()
   }
 
-  return arrayCopy
+  return ratedAlbums.concat(unratedAlbums)
 }
 
 export const roundToDecimals = (value: number, decimals: number): number => {
@@ -22,6 +24,12 @@ export const roundToDecimals = (value: number, decimals: number): number => {
   return Math.round(value * exp) / exp
 }
 
-export const getAverageRating = ({ ratings }: Album): number => ratings
-  .map(rating => rating.rating)
-  .reduce((a, b) => a + b) / ratings.length
+export const getAverageRating = ({ ratings }: Album): number => {
+  if (ratings.length == 0) {
+    return 0
+  }
+
+  return ratings
+    .map(rating => rating.rating)
+    .reduce((a, b) => a + b) / ratings.length
+}

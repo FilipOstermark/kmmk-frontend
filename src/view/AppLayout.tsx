@@ -4,7 +4,7 @@ import RuleBook from "src/assets/MoHU.pdf"
 
 export const AppLayout: () => JSX.Element = () => {
   const navigate = useNavigate()
-  
+
   return (
     <>
       <header>
@@ -16,6 +16,9 @@ export const AppLayout: () => JSX.Element = () => {
           ></img>
         <nav>
           <ul>
+            <li>
+              <a href="http://localhost:8080/oauth2/authorization/facebook">Login</a>
+            </li>
             <li>
               <Link to=''>Topplista</Link>
             </li>

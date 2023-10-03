@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { backendClientInstance } from "src/api/BackendClient"
 import { Album } from "src/model/Album"
+import { Rating } from "src/model/Rating"
 import { ReleaseGroup } from "src/model/ReleaseGroup"
 import { emptyReleaseGroupSearchResult, type ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
+import { User } from "src/model/User"
 import { albumRepositoryInstance } from "src/repository/AlbumRepository"
-import { URL_BACKEND_RELEASE_GROUP } from "src/util/constants"
+import { URL_BACKEND_BASE, URL_BACKEND_RELEASE_GROUP } from "src/util/constants"
 import { useDebounce } from "usehooks-ts"
 import './NewAlbum.css'
 import { RatingSelector } from "./RatingSelector"
@@ -22,11 +25,26 @@ export const NewAlbum: () => JSX.Element = () => {
   const [bestSong, setBestSong] = useState("")
   const [worstSong, setWorstSong] = useState("")
   const [occasion, setOccasion] = useState("")
+  const [ratings, setRatings] = useState<Rating[]>([])
 
-  // TODO Remove hardcoding
-  const [viktorUserRating, setViktorUserRating] = useState<number>(0)
-  const [eliasUserRating, setEliasUserRating] = useState<number>(0)
-  const [filipUserRating, setFilipUserRating] = useState<number>(0)
+  useEffect(() => {
+    async function fetchUsers(): Promise<void> {
+      const userResponse = await backendClientInstance.fetch(URL_BACKEND_BASE + "/user/list")
+      const users = await userResponse.json()
+      const userList: User[] = users["results"]
+      const ratingList: Rating[] = userList.map(user => ({
+          user: user,
+          rating: 0
+        }))
+
+      console.log("Users: ", userList)
+      setRatings(ratingList)
+    }
+
+    fetchUsers().catch(err => { 
+      console.error("Failed to fetch voting users", err) 
+    })
+  }, [])
 
   const [selectedReleaseGroup, setSelectedReleaseGroup] = 
     useState<ReleaseGroup | undefined>()
@@ -82,7 +100,7 @@ export const NewAlbum: () => JSX.Element = () => {
     const encodedJoinedQuery = encodeURIComponent(joinedQuery)
     const fullQueryParamterString = `?query=${encodedJoinedQuery}&limit=25`
 
-    const response = await fetch(
+    const response = await backendClientInstance.fetch(
       `${URL_BACKEND_RELEASE_GROUP}${fullQueryParamterString}`
     )
     const contentJson = await response.json() as (ReleaseGroupSearchResult | undefined)
@@ -117,16 +135,21 @@ export const NewAlbum: () => JSX.Element = () => {
     )
 
   const img = `http://coverartarchive.org/release-group/${selectedReleaseGroup?.id}/front-250`
-  let averageUserRating: "-" | number = "-"
-  if (viktorUserRating && eliasUserRating && filipUserRating) {
+  //let averageUserRating: "-" | number = "-"
+  /*if (viktorUserRating && eliasUserRating && filipUserRating) {
     averageUserRating = Math.round(
         100*(viktorUserRating + eliasUserRating + filipUserRating)/3
       ) / 100
+  }*/
+  let averageUserRating: "-" | number = "-"
+  if (ratings.length != 0) {
+    averageUserRating = (100*ratings.map(rating => rating.rating).reduce((prev, curr) => prev + curr) / 3)/100    
   }
 
   const submitNewAlbum = async () => {
     // TODO Fix this
     const newAlbum: Album = {
+      id: -1,
       mbid: selectedReleaseGroup?.id ?? "",
       title: albumTitle,
       artistName: artistName,
@@ -134,26 +157,23 @@ export const NewAlbum: () => JSX.Element = () => {
       bestSongTitle: bestSong,
       worstSongTitle: worstSong,
       discussionDate: "1992-01-01",
-      discussionSummary: summary,
-      ratings: [
-        {
-          userEmail: "viktor@placeholder.com",
-          rating: viktorUserRating
-        },
-        {
-          userEmail: "elias@placeholder.com",
-          rating: eliasUserRating
-        },
-        {
-          userEmail: "filip@placeholder.com",
-          rating: filipUserRating
-        },
-      ],
-      occasion: occasion
+      summary: summary,
+      ratings: ratings,
+      listeningOccasion: occasion
     }
 
     await albumRepositoryInstance.add(newAlbum)
   }
+
+  const ratingSelectors = ratings.map(rating => (
+    <RatingSelector 
+      ratingUserName={rating.user.name} 
+      onValueChange={newRating => {
+        rating.rating = newRating
+        setRatings(ratings)
+      }} />
+    )
+  )
 
   return (
     <div className="new-album-page">
@@ -238,15 +258,7 @@ export const NewAlbum: () => JSX.Element = () => {
 
             <div className="new-album-input">
               <h2>Betyg ({averageUserRating}/10)</h2>
-              <RatingSelector 
-                ratingUserName="Viktor" 
-                onValueChange={value => { setViktorUserRating(value) }} />
-              <RatingSelector 
-                ratingUserName="Elias" 
-                onValueChange={value => { setEliasUserRating(value) }} />
-              <RatingSelector 
-                ratingUserName="Filip" 
-                onValueChange={value => { setFilipUserRating(value) }} />
+              {ratingSelectors}
             </div>
 
             <button type="submit">Spara</button>

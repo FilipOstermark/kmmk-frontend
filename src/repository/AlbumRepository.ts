@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/require-await */
+import { backendClientInstance } from "src/api/BackendClient"
 import { Album } from "src/model/Album"
 
 export interface AlbumRepository {
@@ -9,7 +10,7 @@ export interface AlbumRepository {
 
 const KEY_LOCAL_STORAGE = "ALBUM_REPOSITORY"
 
-export class AlbumRepositoryImpl implements AlbumRepository {
+export class AlbumRepositoryLocalStorageImpl implements AlbumRepository {
 
   public getAll = async (): Promise<Album[]> => {
     try {
@@ -35,5 +36,37 @@ export class AlbumRepositoryImpl implements AlbumRepository {
   }
 }
 
+export class AlbumRepositoryBackendImpl implements AlbumRepository {
+  public getAll = async (): Promise<Album[]> => {
+    const response = await backendClientInstance.fetch("http://localhost:8080/album/list")
+    const responseJson = await response.json()
+    const albums: Album[] = responseJson["results"]
+    console.log(responseJson)
+
+    return albums
+  }
+
+  public add = async (album: Album) => {
+    fetch("http://localhost:8080/album/", {
+      method: "POST", 
+      mode: "cors",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(album)
+    }).then(res => {
+      console.log("Seems ok! ", res)
+      res.json().then(body => { console.log("Response json: ", body) }).catch(err => { console.error("Json err: ", err) })
+    }).catch(err => {
+      console.error("Request err: ", err)
+    })
+  }
+
+  public remove = async (albumId: string) => {
+    let currentItems = await this.getAll()
+    currentItems = currentItems.filter(album => album.mbid != albumId)
+    localStorage.setItem(KEY_LOCAL_STORAGE, JSON.stringify(currentItems))
+  }
+}
+
 export const albumRepositoryInstance: AlbumRepository = 
-  new AlbumRepositoryImpl()
+  new AlbumRepositoryBackendImpl()
