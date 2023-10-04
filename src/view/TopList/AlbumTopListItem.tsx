@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Album } from "src/model/Album"
-import { getAverageRating, getCoverArtUrl, roundToDecimals } from "src/util/util"
+import { getAverageAlbumRating, getCoverArtUrl, roundToDecimals } from "src/util/util"
 import "src/view/css/TopListItem.css"
 
 export interface AlbumTopListItemProps {
@@ -12,7 +12,7 @@ export const AlbumTopListItem: (
 ) => JSX.Element = ({album}: AlbumTopListItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const averageUserRating: number = roundToDecimals(getAverageRating(album), 2)
+  const averageUserRating: number = roundToDecimals(getAverageAlbumRating(album), 2)
   const ratingDisplay: string = `${averageUserRating}/10`
   const extraInfoDisplay = isExpanded ? "block" : "none"
   

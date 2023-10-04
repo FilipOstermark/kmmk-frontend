@@ -6,6 +6,7 @@ export class BackendClient {
     init?: RequestInit | undefined
   ): Promise<Response> {
 
+    // TODO Replace session with JWT and skip sending session
     return fetch(input, { 
       ...init, 
       mode: "cors",

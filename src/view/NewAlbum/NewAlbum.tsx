@@ -2,12 +2,14 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { backendClientInstance } from "src/api/BackendClient"
 import { Album } from "src/model/Album"
+import { PaginatedResponse } from "src/model/PaginatedResponse"
 import { Rating } from "src/model/Rating"
 import { ReleaseGroup } from "src/model/ReleaseGroup"
 import { emptyReleaseGroupSearchResult, type ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
 import { User } from "src/model/User"
 import { albumRepositoryInstance } from "src/repository/AlbumRepository"
 import { URL_BACKEND_BASE, URL_BACKEND_RELEASE_GROUP } from "src/util/constants"
+import { getAverageRating } from "src/util/util"
 import { useDebounce } from "usehooks-ts"
 import './NewAlbum.css'
 import { RatingSelector } from "./RatingSelector"
@@ -30,8 +32,8 @@ export const NewAlbum: () => JSX.Element = () => {
   useEffect(() => {
     async function fetchUsers(): Promise<void> {
       const userResponse = await backendClientInstance.fetch(URL_BACKEND_BASE + "/user/list")
-      const users = await userResponse.json()
-      const userList: User[] = users["results"]
+      const users = await userResponse.json() as PaginatedResponse<User>
+      const userList: User[] = users.results
       const ratingList: Rating[] = userList.map(user => ({
           user: user,
           rating: 0
@@ -135,16 +137,9 @@ export const NewAlbum: () => JSX.Element = () => {
     )
 
   const img = `http://coverartarchive.org/release-group/${selectedReleaseGroup?.id}/front-250`
-  //let averageUserRating: "-" | number = "-"
-  /*if (viktorUserRating && eliasUserRating && filipUserRating) {
-    averageUserRating = Math.round(
-        100*(viktorUserRating + eliasUserRating + filipUserRating)/3
-      ) / 100
-  }*/
-  let averageUserRating: "-" | number = "-"
-  if (ratings.length != 0) {
-    averageUserRating = (100*ratings.map(rating => rating.rating).reduce((prev, curr) => prev + curr) / 3)/100    
-  }
+
+  const averageUserRating: "-" | number = (ratings.length == 0) 
+    ? "-" : getAverageRating(ratings)
 
   const submitNewAlbum = async () => {
     // TODO Fix this
