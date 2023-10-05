@@ -17,7 +17,7 @@ export const AppLayout: () => JSX.Element = () => {
         <nav>
           <ul>
             <li>
-              <a href="http://localhost:8080/oauth2/authorization/facebook">Login</a>
+              <a href="http://localhost:8080/oauth2/authorization/google">Login</a>
             </li>
             <li>
               <Link to=''>Topplista</Link>

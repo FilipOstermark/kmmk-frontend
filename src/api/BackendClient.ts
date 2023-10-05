@@ -1,4 +1,7 @@
+import { authTokenRepositoryInstance } from "src/repository/AuthTokenRepository"
 
+// TODO
+// Expose abstracted methods that matches API instead of fetch()
 export class BackendClient {
 
   public fetch(
@@ -6,11 +9,19 @@ export class BackendClient {
     init?: RequestInit | undefined
   ): Promise<Response> {
 
-    // TODO Replace session with JWT and skip sending session
+    const headers = new Headers()
+    headers.append("Accept", "application/json")
+    headers.append("Content-Type", "application/json")
+    
+    const authToken = authTokenRepositoryInstance.getAuthToken()
+    if (authToken) {
+      headers.append("Authorization", `Bearer ${authToken}`)
+    }
+
     return fetch(input, { 
       ...init, 
       mode: "cors",
-      credentials: "include"
+      headers: headers
     })
   }
 

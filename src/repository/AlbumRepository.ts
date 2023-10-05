@@ -52,11 +52,8 @@ export class AlbumRepositoryBackendImpl implements AlbumRepository {
     // TODO Error handling
     // TODO Use backend client
     // TODO No sending credentials
-    fetch("http://localhost:8080/album/", {
+    backendClientInstance.fetch("http://localhost:8080/album/", {
       method: "POST", 
-      mode: "cors",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(album)
     }).then(res => {
       console.log("Seems ok! ", res)
@@ -67,6 +64,7 @@ export class AlbumRepositoryBackendImpl implements AlbumRepository {
   }
 
   public remove = async (albumId: string) => {
+    // TODO
     let currentItems = await this.getAll()
     currentItems = currentItems.filter(album => album.mbid != albumId)
     localStorage.setItem(KEY_LOCAL_STORAGE, JSON.stringify(currentItems))
