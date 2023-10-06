@@ -1,60 +1,42 @@
 /* eslint-disable @typescript-eslint/require-await */
-import { backendServiceImpl } from "src/api/BackendServiceImpl"
+import { backendServiceInstance } from "src/api/BackendServiceImpl"
 import { Album } from "src/model/Album"
+import { ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
 
 export interface AlbumRepository {
   getAll: () => Promise<Array<Album>>
   add: (album: Album) => Promise<void>
-  remove: (albumId: string) => Promise<void>
-}
-
-const KEY_LOCAL_STORAGE = "ALBUM_REPOSITORY"
-
-export class AlbumRepositoryLocalStorageImpl implements AlbumRepository {
-
-  public getAll = async (): Promise<Album[]> => {
-    try {
-      return JSON.parse(
-        localStorage.getItem(KEY_LOCAL_STORAGE) ?? "[]"
-      ) as Album[]
-    } catch (error) {
-      console.error("Failed to load albums", error)
-      return []
-    }
-  }
-
-  public add = async (album: Album) => {
-    const currentItems = await this.getAll()
-    currentItems.push(album)
-    localStorage.setItem(KEY_LOCAL_STORAGE, JSON.stringify(currentItems))
-  }
-
-  public remove = async (albumId: string) => {
-    let currentItems = await this.getAll()
-    currentItems = currentItems.filter(album => album.mbid != albumId)
-    localStorage.setItem(KEY_LOCAL_STORAGE, JSON.stringify(currentItems))
-  }
+  remove: (albumId: number) => Promise<void>
+  searchReleaseGroup: (
+    albumTitle: string, 
+    artistName: string
+  ) => Promise<ReleaseGroupSearchResult>
 }
 
 export class AlbumRepositoryBackendImpl implements AlbumRepository {
+  // TODO Error handling
   public getAll = async (): Promise<Album[]> => 
-    // TODO Error handling
-     backendServiceImpl.getAlbumList()
+     backendServiceInstance.getAlbumList()
 
+  // TODO Error handling
   public add = async (album: Album) => {
-    // TODO Error handling
-    // TODO Use backend client
-    // TODO No sending credentials
-    const newAlbum = backendServiceImpl.postAlbum(album)
+    const newAlbum = backendServiceInstance.postAlbum(album)
     console.log("Successfully added album:", JSON.stringify(newAlbum))
   }
 
-  public remove = async (albumId: string) => {
-    // TODO
-    let currentItems = await this.getAll()
-    currentItems = currentItems.filter(album => album.mbid != albumId)
-    localStorage.setItem(KEY_LOCAL_STORAGE, JSON.stringify(currentItems))
+  // TODO Error handling
+  public remove = async (albumId: number) => {
+    await backendServiceInstance.deleteAlbum(albumId)
   }
+
+  // TODO Error handling
+  public searchReleaseGroup = async (
+    albumTitle: string, 
+    artistName: string = ""
+  ) => await backendServiceInstance.getReleaseGroupSearch(
+    albumTitle, 
+    artistName
+  )
 }
 
 export const albumRepositoryInstance: AlbumRepository = 

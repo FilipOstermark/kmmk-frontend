@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { backendServiceImpl } from "src/api/BackendServiceImpl"
 import { Album } from "src/model/Album"
 import { Rating } from "src/model/Rating"
 import { ReleaseGroup } from "src/model/ReleaseGroup"
 import { emptyReleaseGroupSearchResult, type ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
 import { albumRepositoryInstance } from "src/repository/AlbumRepository"
+import { userRepositoryInstance } from "src/repository/UserRepository"
 import { getAverageRating } from "src/util/util"
 import { useDebounce } from "usehooks-ts"
 import './NewAlbum.css'
@@ -33,7 +33,7 @@ export const NewAlbum: () => JSX.Element = () => {
 
   useEffect(() => {
     async function fetchUsers(): Promise<void> {
-      const userList = await backendServiceImpl.getUserList()
+      const userList = await userRepositoryInstance.getAll()
       const ratingList: Rating[] = userList.map(user => ({
           user: user,
           rating: 0
@@ -59,7 +59,7 @@ export const NewAlbum: () => JSX.Element = () => {
     }
     
     async function search(): Promise<void> {
-      const searchResult = await backendServiceImpl.getReleaseGroupSearch(
+      const searchResult = await albumRepositoryInstance.searchReleaseGroup(
         debouncedAlbumTitle, debouncedArtistName
       )
       setSearchResults(searchResult)

@@ -5,13 +5,20 @@ import { User } from "src/model/User"
 import { authTokenRepositoryInstance } from "src/repository/AuthTokenRepository"
 import { URL_BACKEND_BASE } from "src/util/constants"
 
+const HttpMethods = {
+  GET: "GET",
+  PUT: "PUT",
+  POST: "POST",
+  DELETE: "DELETE"
+}
+
 // TODO Expose abstracted methods that matches API instead of fetch()
 // TODO Error handling
 // TODO Interface
 export class BackendServiceImpl {
 
   private fetch(
-    input: RequestInfo,
+    uri: string,
     init?: RequestInit | undefined
   ): Promise<Response> {
 
@@ -24,7 +31,7 @@ export class BackendServiceImpl {
       headers.append("Authorization", `Bearer ${authToken}`)
     }
 
-    return fetch(input, { 
+    return fetch(URL_BACKEND_BASE + uri, { 
       ...init, 
       mode: "cors",
       headers: headers
@@ -50,9 +57,17 @@ export class BackendServiceImpl {
   }
 
   public async postAlbum(album: Album): Promise<Album> {
-    const response = await this.fetch(URL_BACKEND_BASE + "/album/", {
-      method: "POST",
+    const response = await this.fetch("/album", {
+      method: HttpMethods.POST,
       body: JSON.stringify(album)
+    })
+
+    return await response.json() as Album
+  }
+
+  public async deleteAlbum(albumId: number): Promise<Album> {
+    const response = await this.fetch(`/album${albumId}`, {
+      method: HttpMethods.DELETE
     })
 
     return await response.json() as Album
@@ -70,17 +85,18 @@ export class BackendServiceImpl {
       queryParams.push(`artistname:${artistName}*`)
     }
 
-    const joinedQuery = queryParams.join(" AND ") + " NOT secondarytype:compilation"
+    const joinedQuery = queryParams
+      .join(" AND ") + " NOT secondarytype:compilation"
     const encodedJoinedQuery = encodeURIComponent(joinedQuery)
     const fullQueryParamterString = `?query=${encodedJoinedQuery}&limit=25`
 
     const response = await this.fetch(
-      URL_BACKEND_BASE + "/release-group" + fullQueryParamterString
+      `/release-group${fullQueryParamterString}`
     )
-
     return await response.json() as ReleaseGroupSearchResult
   }
 
 }
 
-export const backendServiceImpl: BackendServiceImpl = new BackendServiceImpl()
+export const backendServiceInstance: BackendServiceImpl = 
+  new BackendServiceImpl()

@@ -26,7 +26,7 @@ export const IndividualRating: (props: IndividualRatingProps) => JSX.Element =
 
   return (
     <div>
-      <h3>{rating.userEmail}</h3>
+      <h3>{rating.user.email}</h3>
       <div>{stars}</div>
     </div>
   )
