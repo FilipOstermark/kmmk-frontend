@@ -12,15 +12,25 @@ const HttpMethods = {
   DELETE: "DELETE"
 }
 
+export class BackendError extends Error {
+
+  public readonly cause: Response
+
+  constructor(message: string, cause: Response) {
+    super(message)
+    this.cause = cause
+  }
+}
+
 // TODO Expose abstracted methods that matches API instead of fetch()
 // TODO Error handling
 // TODO Interface
 export class BackendServiceImpl {
 
-  private fetch(
+  private async fetch<T>(
     uri: string,
     init?: RequestInit | undefined
-  ): Promise<Response> {
+  ): Promise<T> {
 
     const headers = new Headers()
     headers.append("Accept", "application/json")
@@ -31,19 +41,28 @@ export class BackendServiceImpl {
       headers.append("Authorization", `Bearer ${authToken}`)
     }
 
-    return fetch(URL_BACKEND_BASE + uri, { 
+    const finalUri = URL_BACKEND_BASE + uri
+    const response: Response = await fetch(finalUri, { 
       ...init, 
       mode: "cors",
       headers: headers
     })
+
+    // TODO: Fix 
+    if (!response.ok) {
+      throw new BackendError(`Request for ${finalUri} failed (${response.status} ${response.statusText})`, response)
+    }
+
+    return await response.json() as T
   }
 
   private async getPaginatedResults<T>(
     uri: string, 
     page: number = 0
   ): Promise<T[]> {
-    const response = await this.fetch(`${uri}?page=${page}`)
-    const paginatedResponseJson = await response.json() as PaginatedResponse<T>
+    const paginatedResponseJson = await this.fetch<PaginatedResponse<T>>(
+      `${uri}?page=${page}`
+    )
     return paginatedResponseJson.results
   }
 
@@ -56,20 +75,16 @@ export class BackendServiceImpl {
   }
 
   public async postAlbum(album: Album): Promise<Album> {
-    const response = await this.fetch("/album", {
+    return await this.fetch<Album>("/album", {
       method: HttpMethods.POST,
       body: JSON.stringify(album)
     })
-
-    return await response.json() as Album
   }
 
   public async deleteAlbum(albumId: number): Promise<Album> {
-    const response = await this.fetch(`/album${albumId}`, {
+    return await this.fetch<Album>(`/album${albumId}`, {
       method: HttpMethods.DELETE
     })
-
-    return await response.json() as Album
   }
 
   public async getReleaseGroupSearch(
@@ -89,10 +104,9 @@ export class BackendServiceImpl {
     const encodedJoinedQuery = encodeURIComponent(joinedQuery)
     const fullQueryParamterString = `?query=${encodedJoinedQuery}&limit=25`
 
-    const response = await this.fetch(
+    return await this.fetch<ReleaseGroupSearchResult>(
       `/release-group${fullQueryParamterString}`
     )
-    return await response.json() as ReleaseGroupSearchResult
   }
 
 }

@@ -39,6 +39,7 @@ export const AlbumTopListItem: (
           <p>Sämsta låt: {album.worstSongTitle}</p>
           <p>Lyssningstillfälle: {album.listeningOccasion}</p>
           <p>Sammanfattning: {album.summary}</p>
+          <p>Väljare: {album.pickedBy?.name}</p>
         </div>
 
       </div>

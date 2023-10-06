@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import ReactDropdown from "react-dropdown"
 import { Link } from "react-router-dom"
+import { BackendError } from "src/api/BackendServiceImpl"
 import { Rating } from "src/model/Rating"
 import { ReleaseGroup } from "src/model/ReleaseGroup"
 import { emptyReleaseGroupSearchResult, type ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
@@ -17,7 +18,7 @@ export const NewAlbum: () => JSX.Element = () => {
   const [searchResults, setSearchResults] = useState<ReleaseGroupSearchResult>(
     emptyReleaseGroupSearchResult()
   )
-  
+
   const [albumTitle, setAlbumTitle] = useState("")
   const [artistName, setArtistName] = useState("")
   const [releaseYear, setReleaseYear] = useState<number>(
@@ -61,17 +62,21 @@ export const NewAlbum: () => JSX.Element = () => {
     if (!debouncedAlbumTitle && !debouncedArtistName) {
       return
     }
-    
-    async function search(): Promise<void> {
-      const searchResult = await albumRepositoryInstance.searchReleaseGroup(
-        debouncedAlbumTitle, debouncedArtistName
-      )
-      setSearchResults(searchResult)
-    }
 
-    search().catch(() => {
-      console.error("Failed to search album information")
-    })
+    albumRepositoryInstance.searchReleaseGroup(
+        debouncedAlbumTitle, 
+        debouncedArtistName
+      )
+      .then(result => { setSearchResults(result) })
+      .catch(err => {
+        if (err instanceof BackendError) {
+          console.error("Release group search failed: ", err, err.cause)
+        } else {
+          console.error("Release group search failed: ", err)
+        }
+
+        setSearchResults(emptyReleaseGroupSearchResult())
+      })
 
   }, [debouncedAlbumTitle, debouncedArtistName])
 
@@ -238,11 +243,11 @@ export const NewAlbum: () => JSX.Element = () => {
 
             <div className="new-album-input">
               <h2>Väljare</h2>
-              <ReactDropdown 
-                options={users.map(user => new Option(user.name, user.id?.toString()))} 
+              <ReactDropdown // TODO Replace with proper REQUIRED selector
+                options={users.map(user => new Option(user.name, user.id.toString()))} 
                 placeholder="Väljare" 
                 onChange={option => {
-                  const selectedUser = users.find(user => option.value == user.id) ?? null
+                  const selectedUser = users.find(user => parseInt(option.value) == user.id) ?? null
                   console.log("Selected 'pickedBy' user: ", JSON.stringify(selectedUser))
                   setPickedBy(selectedUser)
                 }} />
