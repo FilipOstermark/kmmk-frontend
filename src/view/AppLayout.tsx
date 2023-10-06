@@ -8,7 +8,6 @@ export const AppLayout: () => JSX.Element = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    console.log("I render")
     backendServiceInstance.setAuthenticationRequiredHandler(() => {
       navigate("/login")
     })
