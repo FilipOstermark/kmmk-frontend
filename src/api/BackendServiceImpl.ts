@@ -42,8 +42,7 @@ export class BackendServiceImpl {
     uri: string, 
     page: number = 0
   ): Promise<T[]> {
-    const url = `${URL_BACKEND_BASE}${uri}?page=${page}`
-    const response = await this.fetch(url)
+    const response = await this.fetch(`${uri}?page=${page}`)
     const paginatedResponseJson = await response.json() as PaginatedResponse<T>
     return paginatedResponseJson.results
   }

@@ -1,4 +1,5 @@
 import { Rating } from "./Rating"
+import { User } from "./User"
 
 export interface Album {
   id: number,
@@ -11,5 +12,6 @@ export interface Album {
   bestSongTitle: string,
   worstSongTitle: string,
   listeningOccasion: string,
-  discussionDate: string
+  discussionDate: string,
+  pickedBy: User | null
 }

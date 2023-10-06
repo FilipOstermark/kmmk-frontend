@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
+import ReactDropdown from "react-dropdown"
 import { Link } from "react-router-dom"
-import { Album } from "src/model/Album"
 import { Rating } from "src/model/Rating"
 import { ReleaseGroup } from "src/model/ReleaseGroup"
 import { emptyReleaseGroupSearchResult, type ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
+import { User } from "src/model/User"
 import { albumRepositoryInstance } from "src/repository/AlbumRepository"
 import { userRepositoryInstance } from "src/repository/UserRepository"
 import { getAverageRating } from "src/util/util"
@@ -30,6 +31,8 @@ export const NewAlbum: () => JSX.Element = () => {
     new Date().toJSON().slice(0, 10)
   )
   const [ratings, setRatings] = useState<Rating[]>([])
+  const [pickedBy, setPickedBy] = useState<User |null>(null)
+  const [users, setUsers] = useState<User[]>([])
 
   useEffect(() => {
     async function fetchUsers(): Promise<void> {
@@ -39,6 +42,7 @@ export const NewAlbum: () => JSX.Element = () => {
           rating: 0
         }))
 
+      setUsers(userList)
       setRatings(ratingList)
     }
 
@@ -119,22 +123,22 @@ export const NewAlbum: () => JSX.Element = () => {
     ? "-" : getAverageRating(ratings)
 
   const submitNewAlbum = async () => {
-    // TODO Fix this
-    const newAlbum: Album = {
-      id: -1,
-      mbid: selectedReleaseGroup?.id ?? "",
-      title: albumTitle,
-      artistName: artistName,
-      releaseYear: releaseYear.toString(),
-      bestSongTitle: bestSong,
-      worstSongTitle: worstSong,
-      discussionDate: discussionDate,
-      summary: summary,
-      ratings: ratings,
-      listeningOccasion: occasion
-    }
-
-    await albumRepositoryInstance.add(newAlbum)
+    await albumRepositoryInstance.add(
+      {
+        id: -1,
+        mbid: selectedReleaseGroup?.id ?? "",
+        title: albumTitle,
+        artistName: artistName,
+        releaseYear: releaseYear.toString(),
+        bestSongTitle: bestSong,
+        worstSongTitle: worstSong,
+        discussionDate: discussionDate,
+        summary: summary,
+        ratings: ratings,
+        listeningOccasion: occasion,
+        pickedBy: pickedBy
+      }
+    )
   }
 
   return (
@@ -230,6 +234,18 @@ export const NewAlbum: () => JSX.Element = () => {
             <div className="new-album-input">
               <h2>Betyg ({averageUserRating}/10)</h2>
               <RatingSelectorList ratings={ratings} setRatings={setRatings} />
+            </div>
+
+            <div className="new-album-input">
+              <h2>Väljare</h2>
+              <ReactDropdown 
+                options={users.map(user => new Option(user.name, user.id?.toString()))} 
+                placeholder="Väljare" 
+                onChange={option => {
+                  const selectedUser = users.find(user => option.value == user.id) ?? null
+                  console.log("Selected 'pickedBy' user: ", JSON.stringify(selectedUser))
+                  setPickedBy(selectedUser)
+                }} />
             </div>
 
             <button type="submit">Spara</button>
