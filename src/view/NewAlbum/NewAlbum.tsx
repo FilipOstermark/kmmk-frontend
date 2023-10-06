@@ -22,16 +22,23 @@ export const NewAlbum: () => JSX.Element = () => {
   
   const [albumTitle, setAlbumTitle] = useState("")
   const [artistName, setArtistName] = useState("")
-  const [releaseYear, setReleaseYear] = useState<number>(0)
+  const [releaseYear, setReleaseYear] = useState<number>(
+    new Date().getFullYear()
+  )
   const [summary, setSummary] = useState("")
   const [bestSong, setBestSong] = useState("")
   const [worstSong, setWorstSong] = useState("")
   const [occasion, setOccasion] = useState("")
+  const [discussionDate, setDiscussionDate] = useState(
+    new Date().toJSON().slice(0, 10)
+  )
   const [ratings, setRatings] = useState<Rating[]>([])
 
   useEffect(() => {
     async function fetchUsers(): Promise<void> {
-      const userResponse = await backendClientInstance.fetch(URL_BACKEND_BASE + "/user/list")
+      const userResponse = await backendClientInstance.fetch(
+        URL_BACKEND_BASE + "/user/list"
+      )
       const users = await userResponse.json() as PaginatedResponse<User>
       const userList: User[] = users.results
       const ratingList: Rating[] = userList.map(user => ({
@@ -151,7 +158,7 @@ export const NewAlbum: () => JSX.Element = () => {
       releaseYear: releaseYear.toString(),
       bestSongTitle: bestSong,
       worstSongTitle: worstSong,
-      discussionDate: "1992-01-01",
+      discussionDate: discussionDate,
       summary: summary,
       ratings: ratings,
       listeningOccasion: occasion
@@ -249,6 +256,15 @@ export const NewAlbum: () => JSX.Element = () => {
                 type="text" 
                 value={occasion} 
                 onChange={e => { setOccasion(e.target.value) }}/>
+            </div>
+
+            <div className="new-album-input">
+              <h2>Datum för diskussion</h2>
+              <input 
+                required
+                type="date" 
+                value={discussionDate} 
+                onChange={e => { setDiscussionDate(e.target.value) }}/>
             </div>
 
             <div className="new-album-input">
