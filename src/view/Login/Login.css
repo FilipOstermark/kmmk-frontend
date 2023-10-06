@@ -1,0 +1,17 @@
+.login-page {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  margin-top: 2rem;
+
+  width: fit-content;
+  padding: 0 3rem 3rem 3rem;
+
+  background-size: cover;
+
+  border-radius: 2rem;
+}

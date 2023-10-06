@@ -2,18 +2,31 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AppLayout } from 'src/view/AppLayout'
 import { NewAlbum } from 'src/view/NewAlbum/NewAlbum'
 import 'src/view/css/App.css'
-import { OAuth2TokenHandler } from './OAuth2/OAuth2TokenHandler'
+import { Login } from './Login/Login'
+import { OAuth2TokenHandler } from './Login/OAuth2TokenHandler'
+import { PrivateRoute } from './Login/PrivateRoute'
 import { AlbumTopList } from './TopList/AlbumTopList'
 
-const App: () => JSX.Element = () => 
-   (
+const App: () => JSX.Element = () => (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<AppLayout />} >
-          <Route index path='' element={<AlbumTopList />} />
-          <Route path='/oauth2/token' element={<OAuth2TokenHandler />}></Route>
-          <Route path='new-album' element={<NewAlbum />} />
-          <Route path='*' element={<AlbumTopList />} />
+          <Route path='login' element={<Login />} />
+          <Route path='oauth2/token' element={<OAuth2TokenHandler />}></Route>
+
+          <Route index path='' element={
+            <PrivateRoute>
+              <AlbumTopList />
+            </PrivateRoute>
+          } />
+          <Route path='new-album' element={
+            <PrivateRoute>
+              <NewAlbum />
+            </PrivateRoute>} />
+          <Route path='*' element={
+            <PrivateRoute>
+              <AlbumTopList />
+            </PrivateRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>

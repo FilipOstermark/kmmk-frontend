@@ -22,10 +22,17 @@ export class BackendError extends Error {
   }
 }
 
+export class AuthenticationRequiredError extends BackendError {}
+
+type AuthenticationRequiredHandler = () => void
+
 // TODO Expose abstracted methods that matches API instead of fetch()
 // TODO Error handling
 // TODO Interface
 export class BackendServiceImpl {
+
+  private authenticationRequiredHandler: AuthenticationRequiredHandler | null = 
+    null
 
   private async fetch<T>(
     uri: string,
@@ -48,8 +55,13 @@ export class BackendServiceImpl {
       headers: headers
     })
 
-    // TODO: Fix 
-    if (!response.ok) {
+    if (response.status == 401) {
+      if (this.authenticationRequiredHandler) {
+        this.authenticationRequiredHandler()
+      }
+
+      throw new AuthenticationRequiredError('Authentication required', response)
+    } else if (!response.ok) {
       throw new BackendError(`Request for ${finalUri} failed (${response.status} ${response.statusText})`, response)
     }
 
@@ -64,6 +76,10 @@ export class BackendServiceImpl {
       `${uri}?page=${page}`
     )
     return paginatedResponseJson.results
+  }
+
+  public loginWithGoogle() {
+    window.location.href='http://localhost:8080/oauth2/authorization/google'
   }
 
   public async getUserList(page: number = 0): Promise<User[]> {
@@ -107,6 +123,12 @@ export class BackendServiceImpl {
     return await this.fetch<ReleaseGroupSearchResult>(
       `/release-group${fullQueryParamterString}`
     )
+  }
+  
+  public setAuthenticationRequiredHandler(
+    authenticationRequiredHandler: AuthenticationRequiredHandler
+  ): void {
+    this.authenticationRequiredHandler = authenticationRequiredHandler
   }
 
 }
