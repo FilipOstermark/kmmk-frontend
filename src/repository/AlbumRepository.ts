@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/require-await */
-import { backendClientInstance } from "src/api/BackendClient"
+import { backendServiceImpl } from "src/api/BackendServiceImpl"
 import { Album } from "src/model/Album"
-import { PaginatedResponse } from "src/model/PaginatedResponse"
 
 export interface AlbumRepository {
   getAll: () => Promise<Array<Album>>
@@ -38,29 +37,16 @@ export class AlbumRepositoryLocalStorageImpl implements AlbumRepository {
 }
 
 export class AlbumRepositoryBackendImpl implements AlbumRepository {
-  public getAll = async (): Promise<Album[]> => {
+  public getAll = async (): Promise<Album[]> => 
     // TODO Error handling
-    const response = await backendClientInstance.fetch("http://localhost:8080/album/list")
-    const responseJson = await response.json() as PaginatedResponse<Album>
-    const albums: Album[] = responseJson["results"]
-    console.log(responseJson)
-
-    return albums
-  }
+     backendServiceImpl.getAlbumList()
 
   public add = async (album: Album) => {
     // TODO Error handling
     // TODO Use backend client
     // TODO No sending credentials
-    backendClientInstance.fetch("http://localhost:8080/album/", {
-      method: "POST", 
-      body: JSON.stringify(album)
-    }).then(res => {
-      console.log("Seems ok! ", res)
-      res.json().then(body => { console.log("Response json: ", body) }).catch(err => { console.error("Json err: ", err) })
-    }).catch(err => {
-      console.error("Request err: ", err)
-    })
+    const newAlbum = backendServiceImpl.postAlbum(album)
+    console.log("Successfully added album:", JSON.stringify(newAlbum))
   }
 
   public remove = async (albumId: string) => {

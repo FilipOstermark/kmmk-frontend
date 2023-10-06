@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { backendClientInstance } from "src/api/BackendClient"
+import { backendServiceImpl } from "src/api/BackendServiceImpl"
 import { Album } from "src/model/Album"
-import { PaginatedResponse } from "src/model/PaginatedResponse"
 import { Rating } from "src/model/Rating"
 import { ReleaseGroup } from "src/model/ReleaseGroup"
 import { emptyReleaseGroupSearchResult, type ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
-import { User } from "src/model/User"
 import { albumRepositoryInstance } from "src/repository/AlbumRepository"
-import { URL_BACKEND_BASE, URL_BACKEND_RELEASE_GROUP } from "src/util/constants"
 import { getAverageRating } from "src/util/util"
 import { useDebounce } from "usehooks-ts"
 import './NewAlbum.css'
-import { RatingSelector } from "./RatingSelector"
+import { RatingSelectorList } from "./RatingSelectorList"
 import { SearchSuggestion } from "./SearchSuggestion"
 
 export const NewAlbum: () => JSX.Element = () => {
@@ -36,17 +33,12 @@ export const NewAlbum: () => JSX.Element = () => {
 
   useEffect(() => {
     async function fetchUsers(): Promise<void> {
-      const userResponse = await backendClientInstance.fetch(
-        URL_BACKEND_BASE + "/user/list"
-      )
-      const users = await userResponse.json() as PaginatedResponse<User>
-      const userList: User[] = users.results
+      const userList = await backendServiceImpl.getUserList()
       const ratingList: Rating[] = userList.map(user => ({
           user: user,
           rating: 0
         }))
 
-      console.log("Users: ", userList)
       setRatings(ratingList)
     }
 
@@ -65,8 +57,15 @@ export const NewAlbum: () => JSX.Element = () => {
     if (!debouncedAlbumTitle && !debouncedArtistName) {
       return
     }
+    
+    async function search(): Promise<void> {
+      const searchResult = await backendServiceImpl.getReleaseGroupSearch(
+        debouncedAlbumTitle, debouncedArtistName
+      )
+      setSearchResults(searchResult)
+    }
 
-    search(debouncedAlbumTitle, debouncedArtistName).catch(() => {
+    search().catch(() => {
       console.error("Failed to search album information")
     })
 
@@ -87,35 +86,6 @@ export const NewAlbum: () => JSX.Element = () => {
     setArtistName(artist)
     setReleaseYear(year)
   }, [selectedReleaseGroup])
-
-  /**
-   * TODO Move to repo
-   */
-  async function search(
-    albumTitle: string, 
-    artistName: string | undefined
-  ): Promise<void> {
-
-    const queryParams = [
-      `release:${albumTitle}`,
-      "primarytype:album",
-      "status:official"
-    ]
-    if (artistName) {
-      queryParams.push(`artistname:${artistName}*`)
-    }
-
-    const joinedQuery = queryParams.join(" AND ") + " NOT secondarytype:compilation"
-    const encodedJoinedQuery = encodeURIComponent(joinedQuery)
-    const fullQueryParamterString = `?query=${encodedJoinedQuery}&limit=25`
-
-    const response = await backendClientInstance.fetch(
-      `${URL_BACKEND_RELEASE_GROUP}${fullQueryParamterString}`
-    )
-    const contentJson = await response.json() as (ReleaseGroupSearchResult | undefined)
-
-    setSearchResults(contentJson ?? emptyReleaseGroupSearchResult())
-  }
 
   interface SearchResultsProps {
     searchResults: ReleaseGroupSearchResult | undefined
@@ -166,16 +136,6 @@ export const NewAlbum: () => JSX.Element = () => {
 
     await albumRepositoryInstance.add(newAlbum)
   }
-
-  const ratingSelectors = ratings.map(rating => (
-    <RatingSelector 
-      ratingUserName={rating.user.name} 
-      onValueChange={newRating => {
-        rating.rating = newRating
-        setRatings(ratings)
-      }} />
-    )
-  )
 
   return (
     <div className="new-album-page">
@@ -269,7 +229,7 @@ export const NewAlbum: () => JSX.Element = () => {
 
             <div className="new-album-input">
               <h2>Betyg ({averageUserRating}/10)</h2>
-              {ratingSelectors}
+              <RatingSelectorList ratings={ratings} setRatings={setRatings} />
             </div>
 
             <button type="submit">Spara</button>

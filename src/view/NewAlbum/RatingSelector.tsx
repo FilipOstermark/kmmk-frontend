@@ -27,18 +27,16 @@ export const RatingStar: (props: RatingStarProps) => JSX.Element = (
 
 interface RatingSelectorProps {
   ratingUserName: string
+  selectedValue: number
   onValueChange: (value: number) => void
 }
 
 export const RatingSelector: (
   props: RatingSelectorProps
 ) => JSX.Element = (
-  { ratingUserName, onValueChange }: RatingSelectorProps
+  { ratingUserName, selectedValue, onValueChange }: RatingSelectorProps
 ) => {
   const [hoveredValue, setHoveredValue] = useState<number>()
-  const [selectedValue, setSelectedValue] = useState<number>()
-
-  
 
   const stars = []
   for (let i = 1; i < 11; i++) {
@@ -48,7 +46,6 @@ export const RatingSelector: (
         value={i}
         selectedValue={hoveredValue ?? selectedValue}
         setValue={value => {
-          setSelectedValue(value)
           onValueChange(value)
         }}
         setHoveredValue={setHoveredValue}
@@ -58,7 +55,7 @@ export const RatingSelector: (
 
   return (
     <div className="rating-selector-wrapper">
-      <h3>{ratingUserName} ({selectedValue ?? "-"}/10)</h3>
+      <h3>{ratingUserName} ({selectedValue}/10)</h3>
       <div className="rating-selector-stars">
         {stars}
       </div>
