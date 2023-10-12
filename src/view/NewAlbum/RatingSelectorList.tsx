@@ -10,14 +10,13 @@ export const RatingSelectorList: (
 ) => JSX.Element = ({ ratings, setRatings }: RatingSelectorListProperties) => {
   const ratingsCopy: Rating[] = [...ratings]
   const ratingSelectors = ratingsCopy.map(rating => (
-    <>
+    <div key={"rating-" + rating.user.name}>
       <h3>{rating.user.name}</h3>
       <div className="rating-selector">
         <input 
           className="rating-slider" 
           type="range" min={0} 
           max={100} 
-          defaultValue={50} 
           value={rating.rating} 
           onChange={e => {
             rating.rating = parseInt(e.target.value)
@@ -26,7 +25,7 @@ export const RatingSelectorList: (
         />
         <p>{rating.rating} / 100</p>
       </div>
-    </>
+    </div>
     )
   )
 

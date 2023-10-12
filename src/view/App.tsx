@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import 'src/view/App.css'
 import { AppLayout } from 'src/view/AppLayout'
 import { NewAlbum } from 'src/view/NewAlbum/NewAlbum'
-import 'src/view/css/App.css'
 import { AccountSettings } from './Account/AccountSettings'
 import { Login } from './Login/Login'
 import { OAuth2TokenHandler } from './Login/OAuth2TokenHandler'

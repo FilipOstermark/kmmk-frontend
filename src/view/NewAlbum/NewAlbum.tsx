@@ -40,7 +40,7 @@ export const NewAlbum: () => JSX.Element = () => {
       const userList = await userRepositoryInstance.getAll()
       const ratingList: Rating[] = userList.map(user => ({
           user: user,
-          rating: 0
+          rating: 50
         }))
 
       setUsers(userList)

@@ -24,6 +24,10 @@ header {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+header > img {
+  filter: blur(0.1px);
+}
+
 header > img:hover {
   cursor: pointer;
 }

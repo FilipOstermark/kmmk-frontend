@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { Album } from "src/model/Album"
 import { getAverageAlbumRating, getCoverArtUrl, roundToDecimals } from "src/util/util"
-import "src/view/css/TopListItem.css"
+import "src/view/TopList/AlbumTopListItem.css"
+import { IndividualRatings } from "./IndividualRatings"
 
 export interface AlbumTopListItemProps {
   album: Album
@@ -15,14 +16,18 @@ export const AlbumTopListItem: (
   const averageUserRating: number = roundToDecimals(getAverageAlbumRating(album), 2)
   const ratingDisplay: string = `${averageUserRating} / 100`
   const extraInfoDisplay = isExpanded ? "block" : "none"
+  const coverArtUrl = getCoverArtUrl(album.mbid)
   
   function toggleExpanded() {
     setIsExpanded(prev => prev = !prev)
   }
 
   return (
-    <div className="top-list-item" onClick={toggleExpanded}>
-      <img src={ getCoverArtUrl(album.mbid)} alt="Cover art"></img>
+    <div className="top-list-item" onClick={toggleExpanded} >
+      <div 
+        className="list-item-background-image" 
+        style={{ backgroundImage: `url(${coverArtUrl})` }} />
+      <img src={coverArtUrl} alt="Cover art" />
 
       <div className="top-list-item-info">
         
@@ -34,12 +39,17 @@ export const AlbumTopListItem: (
         </div>
 
         <div className="top-list-item-info-extra" style={{ display: extraInfoDisplay }}>
-          <hr />
-          <p>Bästa låt: {album.bestSongTitle}</p>
-          <p>Sämsta låt: {album.worstSongTitle}</p>
-          <p>Lyssningstillfälle: {album.listeningOccasion}</p>
-          <p>Sammanfattning: {album.summary}</p>
-          <p>Väljare: {album.pickedBy?.name}</p>
+          <h3>Individuella betyg</h3>
+          <IndividualRatings ratings={album.ratings} />
+
+          <h3>Övrigt</h3>
+          <ul className="top-list-info-list">
+          <li><p>Bästa låt: {album.bestSongTitle}</p></li>
+          <li><p>Sämsta låt: {album.worstSongTitle}</p></li>
+          <li><p>Lyssningstillfälle: {album.listeningOccasion}</p></li>
+          <li><p>Sammanfattning: {album.summary}</p></li>
+          <li><p>Väljare: {album.pickedBy?.name}</p></li>
+          </ul>
         </div>
 
       </div>
