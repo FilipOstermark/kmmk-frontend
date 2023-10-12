@@ -24,7 +24,7 @@ export const RatingSelectorList: (
             setRatings(ratingsCopy)
           }} 
         />
-        <p>{rating.rating} / 100</p>
+        <p>{rating.rating} / {MAX_ALBUM_RATING}</p>
       </div>
     </div>
     )
