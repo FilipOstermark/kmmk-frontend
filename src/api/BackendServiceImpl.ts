@@ -86,6 +86,10 @@ export class BackendServiceImpl {
     return await this.getPaginatedResults("/user/list", page)
   }
 
+  public async getUserSelf(): Promise<User> {
+    return await this.fetch("/user/self")
+  }
+
   public async getAlbumList(page: number = 0): Promise<Album[]> {
     return await this.getPaginatedResults("/album/list", page)
   }

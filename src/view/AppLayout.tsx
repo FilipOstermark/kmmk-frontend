@@ -1,8 +1,9 @@
 import { useEffect } from "react"
 import { Link, Outlet, useNavigate } from "react-router-dom"
 import { backendServiceInstance } from "src/api/BackendServiceImpl"
-import KmmkLogo from "src/assets/kmmk-logo.png"
 import RuleBook from "src/assets/MoHU.pdf"
+import KmmkLogo from "src/assets/kmmk-logo.png"
+import { LoginMenuItem } from "./Login/LoginMenuItem"
 
 export const AppLayout: () => JSX.Element = () => {
   const navigate = useNavigate()
@@ -26,7 +27,7 @@ export const AppLayout: () => JSX.Element = () => {
         <nav>
           <ul>
             <li>
-              <Link to="/login">Logga in</Link>
+              <LoginMenuItem />
             </li>
             <li>
               <Link to=''>Topplista</Link>
