@@ -8,7 +8,7 @@ import { emptyReleaseGroupSearchResult, type ReleaseGroupSearchResult } from "sr
 import { User } from "src/model/User"
 import { albumRepositoryInstance } from "src/repository/AlbumRepository"
 import { userRepositoryInstance } from "src/repository/UserRepository"
-import { getAverageRating } from "src/util/util"
+import { getAverageRating, roundToDecimals } from "src/util/util"
 import { useDebounce } from "usehooks-ts"
 import './NewAlbum.css'
 import { RatingSelectorList } from "./RatingSelectorList"
@@ -125,7 +125,7 @@ export const NewAlbum: () => JSX.Element = () => {
   const img = `http://coverartarchive.org/release-group/${selectedReleaseGroup?.id}/front-250`
 
   const averageUserRating: "-" | number = (ratings.length == 0) 
-    ? "-" : getAverageRating(ratings)
+    ? "-" : roundToDecimals(getAverageRating(ratings), 1)
 
   const submitNewAlbum = async () => {
     await albumRepositoryInstance.add(

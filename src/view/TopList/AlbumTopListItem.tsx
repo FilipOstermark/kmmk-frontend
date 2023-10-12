@@ -13,7 +13,7 @@ export const AlbumTopListItem: (
   const [isExpanded, setIsExpanded] = useState(false)
 
   const averageUserRating: number = roundToDecimals(getAverageAlbumRating(album), 2)
-  const ratingDisplay: string = `${averageUserRating}/10`
+  const ratingDisplay: string = `${averageUserRating} / 100`
   const extraInfoDisplay = isExpanded ? "block" : "none"
   
   function toggleExpanded() {
@@ -26,8 +26,8 @@ export const AlbumTopListItem: (
 
       <div className="top-list-item-info">
         
-        <h3>{album.title}</h3>
-        <p>{album.releaseYear}</p>
+        <h3>{album.title} ({album.releaseYear})</h3>
+        <p>{album.artistName}</p>
         <div className="top-list-item-rating">
           <span className="top-list-item-rating-star material-symbols-rounded">star</span>
           <p className="top-list-item-rating-text">{ratingDisplay}</p>

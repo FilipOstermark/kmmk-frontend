@@ -1,5 +1,4 @@
 import { Rating } from "src/model/Rating"
-import { RatingSelector } from "./RatingSelector"
 
 export interface RatingSelectorListProperties {
   ratings: Rating[]
@@ -9,19 +8,31 @@ export interface RatingSelectorListProperties {
 export const RatingSelectorList: (
   props: RatingSelectorListProperties
 ) => JSX.Element = ({ ratings, setRatings }: RatingSelectorListProperties) => {
-  const ratingSelectors = ratings.map(rating => (
-    <RatingSelector 
-      key={rating.user.id}
-      ratingUserName={rating.user.name} 
-      selectedValue={rating.rating}
-      onValueChange={newRating => {
-        rating.rating = newRating
-        setRatings([...ratings])
-      }} />
+  const ratingsCopy: Rating[] = [...ratings]
+  const ratingSelectors = ratingsCopy.map(rating => (
+    <>
+      <h3>{rating.user.name}</h3>
+      <div className="rating-selector">
+        <input 
+          className="rating-slider" 
+          type="range" min={0} 
+          max={100} 
+          defaultValue={50} 
+          value={rating.rating} 
+          onChange={e => {
+            rating.rating = parseInt(e.target.value)
+            setRatings(ratingsCopy)
+          }} 
+        />
+        <p>{rating.rating} / 100</p>
+      </div>
+    </>
     )
   )
 
   return (
-    <>{ratingSelectors}</>
+    <div className="rating-selector-list">
+      {ratingSelectors}
+    </div>
   )
 }
