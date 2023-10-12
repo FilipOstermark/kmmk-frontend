@@ -1,4 +1,5 @@
 import { Rating } from "src/model/Rating"
+import { MAX_ALBUM_RATING, MIN_ALBUM_RATING } from "src/util/constants"
 
 export interface RatingSelectorListProperties {
   ratings: Rating[]
@@ -15,8 +16,8 @@ export const RatingSelectorList: (
       <div className="rating-selector">
         <input 
           className="rating-slider" 
-          type="range" min={0} 
-          max={100} 
+          type="range" min={MIN_ALBUM_RATING} 
+          max={MAX_ALBUM_RATING} 
           value={rating.rating} 
           onChange={e => {
             rating.rating = parseInt(e.target.value)

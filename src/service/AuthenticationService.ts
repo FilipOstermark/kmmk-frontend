@@ -1,8 +1,10 @@
+import { JWT } from "src/model/JWT"
 import { AuthTokenRepository, authTokenRepositoryInstance } from "src/repository/AuthTokenRepository"
+import { parseJwt } from "src/util/util"
 
 export interface AuthenticationService {
   isLoggedIn: () => boolean
-  getAuthenticationToken: () => string | null
+  parsedJWT: () => JWT | null
 }
 
 export class AuthenticationServiceImpl implements AuthenticationService {
@@ -15,7 +17,14 @@ export class AuthenticationServiceImpl implements AuthenticationService {
   
   isLoggedIn: () => boolean = () => this.authTokenRepository.getAuthToken() != null
   
-  getAuthenticationToken: () => string | null = () => this.authTokenRepository.getAuthToken()
+  parsedJWT: () => JWT | null = () => {
+    const authToken = this.authTokenRepository.getAuthToken()
+    if (!authToken) {
+      return null
+    }
+
+    return parseJwt(authToken)
+  }
 }
 
 export const authenticationServiceInstance: AuthenticationService = 

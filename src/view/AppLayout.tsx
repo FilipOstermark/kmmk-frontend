@@ -1,9 +1,8 @@
 import { useEffect } from "react"
-import { Link, Outlet, useNavigate } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import { backendServiceInstance } from "src/api/BackendServiceImpl"
-import RuleBook from "src/assets/MoHU.pdf"
 import KmmkLogo from "src/assets/kmmk-logo.png"
-import { LoginMenuItem } from "./Login/LoginMenuItem"
+import { NavigationMenu } from "./Navigation/NavigationMenu"
 
 export const AppLayout: () => JSX.Element = () => {
   const navigate = useNavigate()
@@ -24,22 +23,7 @@ export const AppLayout: () => JSX.Element = () => {
           onClick={() => { navigate('/') }}
           alt="KMMK Logo"
           ></img>
-        <nav>
-          <ul>
-            <li>
-              <LoginMenuItem />
-            </li>
-            <li>
-              <Link to=''>Topplista</Link>
-            </li>
-            <li>
-              <Link to='/new-album'>+ Nytt album</Link>
-            </li>
-            <li>
-              <a href={RuleBook}>Manifest</a>
-            </li>
-          </ul>
-        </nav>
+        <NavigationMenu />
       </header>
 
       <article>

@@ -90,6 +90,12 @@ export class BackendServiceImpl {
     return await this.fetch("/user/self")
   }
 
+  public async deleteUserSelf(): Promise<void> {
+    await this.fetch("/user/self", {
+      method: HttpMethods.DELETE
+    })
+  }
+
   public async getAlbumList(page: number = 0): Promise<Album[]> {
     return await this.getPaginatedResults("/album/list", page)
   }

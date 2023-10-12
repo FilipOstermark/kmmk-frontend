@@ -1,4 +1,5 @@
 import { Album } from "src/model/Album"
+import { JWT } from "src/model/JWT"
 import { Rating } from "src/model/Rating"
 
 export const getCoverArtUrl: (mbid: string) => string | undefined = 
@@ -37,4 +38,14 @@ export const getAverageAlbumRating = ({ ratings }: Album): number =>
 export const roundToDecimals = (value: number, decimals: number): number => {
   const exp = Math.pow(10, decimals)
   return Math.round(value * exp) / exp
+}
+
+export const parseJwt: (token: string) => JWT = token => {
+  const base64Url: string = token.split('.')[1]
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+  }).join(''))
+
+  return JSON.parse(jsonPayload) as JWT
 }

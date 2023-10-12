@@ -8,6 +8,7 @@ import { emptyReleaseGroupSearchResult, type ReleaseGroupSearchResult } from "sr
 import { User } from "src/model/User"
 import { albumRepositoryInstance } from "src/repository/AlbumRepository"
 import { userRepositoryInstance } from "src/repository/UserRepository"
+import { MAX_ALBUM_RATING } from "src/util/constants"
 import { getAverageRating, roundToDecimals } from "src/util/util"
 import { useDebounce } from "usehooks-ts"
 import './NewAlbum.css'
@@ -237,7 +238,7 @@ export const NewAlbum: () => JSX.Element = () => {
             </div>
 
             <div className="new-album-input">
-              <h2>Betyg ({averageUserRating}/10)</h2>
+              <h2>Betyg ({averageUserRating}/{MAX_ALBUM_RATING})</h2>
               <RatingSelectorList ratings={ratings} setRatings={setRatings} />
             </div>
 
