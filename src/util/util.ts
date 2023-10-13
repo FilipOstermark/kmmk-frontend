@@ -49,3 +49,5 @@ export const parseJwt: (token: string) => JWT = token => {
 
   return JSON.parse(jsonPayload) as JWT
 }
+
+export const toggleBoolean: (prev: boolean) => boolean = prev => !prev

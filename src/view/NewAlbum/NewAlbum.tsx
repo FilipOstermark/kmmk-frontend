@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import ReactDropdown from "react-dropdown"
-import { Link } from "react-router-dom"
 import { BackendError } from "src/api/BackendServiceImpl"
 import { Rating } from "src/model/Rating"
 import { ReleaseGroup } from "src/model/ReleaseGroup"
@@ -149,10 +148,7 @@ export const NewAlbum: () => JSX.Element = () => {
 
   return (
     <div className="new-album-page">
-      <div className="new-album-page-header">
-        <Link to='/'>Topplista &gt;</Link>
-        <h2>Nytt album</h2>
-      </div>
+      <h2>Nytt album</h2>
 
       <div className="new-album-page-content" >
         <div 

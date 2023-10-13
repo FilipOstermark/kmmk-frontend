@@ -7,17 +7,22 @@ import { IndividualRatings } from "./IndividualRatings"
 
 export interface AlbumTopListItemProps {
   album: Album
+  index: number
 }
 
 export const AlbumTopListItem: (
   props: AlbumTopListItemProps
-) => JSX.Element = ({album}: AlbumTopListItemProps) => {
+) => JSX.Element = ({ album, index }: AlbumTopListItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const averageUserRating: number = roundToDecimals(getAverageAlbumRating(album), 2)
+  const averageUserRating: number = roundToDecimals(
+    getAverageAlbumRating(album), 
+    2
+  )
   const ratingDisplay: string = `${averageUserRating} / ${ALBUM_RATING_MAX}`
   const extraInfoDisplay = isExpanded ? "block" : "none"
   const coverArtUrl = getCoverArtUrl(album.mbid)
+  const ranking = (index + 1).toString().padStart(2, "0")
   
   function toggleExpanded() {
     setIsExpanded(prev => prev = !prev)
@@ -28,11 +33,15 @@ export const AlbumTopListItem: (
       <div 
         className="list-item-background-image" 
         style={{ backgroundImage: `url(${coverArtUrl})` }} />
-      <img src={coverArtUrl} alt="Cover art" />
+      
+      <div className="top-list-item-cover-art-wrapper">
+        <img className="top-list-item-cover-art saturated-blur" src={coverArtUrl} alt="Cover art blur" />
+        <img className="top-list-item-cover-art" src={coverArtUrl} alt="Cover art" />
+      </div>
 
       <div className="top-list-item-info">
         
-        <h3>{album.title} ({album.releaseYear})</h3>
+        <h3>{ranking}. {album.title} ({album.releaseYear})</h3>
         <p>{album.artistName}</p>
         <div className="top-list-item-rating">
           <span className="top-list-item-rating-star material-symbols-rounded">star</span>

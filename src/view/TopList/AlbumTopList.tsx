@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { type Album } from "src/model/Album"
 import { albumRepositoryInstance } from "src/repository/AlbumRepository"
 import { sortAlbumsByRating } from "src/util/util"
@@ -21,20 +21,17 @@ export const AlbumTopList: () => JSX.Element = () => {
     })
   }, [])
 
-  const albumListDisplay = albumList.map(album => (
+  const albumListDisplay = albumList.map((album, index) => (
       <li key={album.id}>
-        <AlbumTopListItem album={album} />
+        <AlbumTopListItem album={album} index={index} />
       </li>
     ))
 
   return (
     <>
-      <div className="new-album-page-header">
-        <h2>Topplista</h2>
-        <Link to='/new-album'>&gt; Nytt album</Link>
-      </div>
+      <h1>Topplista</h1>
       <a onClick={() => { navigate('/new-album') }}>+ Nytt album</a>
-      <ol>{albumListDisplay}</ol>
+      <ol className="top-list">{albumListDisplay}</ol>
       <a onClick={() => { navigate('/new-album') }}>+ Nytt album</a>
     </>
   )
