@@ -6,6 +6,7 @@ import { AccountSettings } from './Account/AccountSettings'
 import { Login } from './Login/Login'
 import { OAuth2TokenHandler } from './Login/OAuth2TokenHandler'
 import { PrivateRoute } from './Login/PrivateRoute'
+import { PrivacyPolicy } from './Privacy/PrivacyPolicy'
 import { AlbumTopList } from './TopList/AlbumTopList'
 
 const App: () => JSX.Element = () => (
@@ -13,7 +14,8 @@ const App: () => JSX.Element = () => (
       <Routes>
         <Route path='/' element={<AppLayout />} >
           <Route path='login' element={<Login />} />
-          <Route path='oauth2/token' element={<OAuth2TokenHandler />}></Route>
+          <Route path='oauth2/token' element={<OAuth2TokenHandler />} />
+          <Route path='privacy-policy' element={<PrivacyPolicy />} />
 
           <Route index path='' element={<PrivateRoute><AlbumTopList /></PrivateRoute>} />
           <Route path='new-album' element={<PrivateRoute><NewAlbum /></PrivateRoute>} />

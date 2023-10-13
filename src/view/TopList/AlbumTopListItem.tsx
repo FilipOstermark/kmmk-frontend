@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Album } from "src/model/Album"
-import { MAX_ALBUM_RATING } from "src/util/constants"
+import { ALBUM_RATING_MAX } from "src/util/constants"
 import { getAverageAlbumRating, getCoverArtUrl, roundToDecimals } from "src/util/util"
 import "src/view/TopList/AlbumTopListItem.css"
 import { IndividualRatings } from "./IndividualRatings"
@@ -15,7 +15,7 @@ export const AlbumTopListItem: (
   const [isExpanded, setIsExpanded] = useState(false)
 
   const averageUserRating: number = roundToDecimals(getAverageAlbumRating(album), 2)
-  const ratingDisplay: string = `${averageUserRating} / ${MAX_ALBUM_RATING}`
+  const ratingDisplay: string = `${averageUserRating} / ${ALBUM_RATING_MAX}`
   const extraInfoDisplay = isExpanded ? "block" : "none"
   const coverArtUrl = getCoverArtUrl(album.mbid)
   

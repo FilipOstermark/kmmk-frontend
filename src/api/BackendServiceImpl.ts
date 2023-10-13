@@ -3,7 +3,7 @@ import { PaginatedResponse } from "src/model/PaginatedResponse"
 import { ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
 import { User } from "src/model/User"
 import { authTokenRepositoryInstance } from "src/repository/AuthTokenRepository"
-import { URL_BACKEND_BASE } from "src/util/constants"
+import { BACKEND_URL_BASE } from "src/util/constants"
 
 const HttpMethods = {
   GET: "GET",
@@ -48,7 +48,7 @@ export class BackendServiceImpl {
       headers.append("Authorization", `Bearer ${authToken}`)
     }
 
-    const finalUri = URL_BACKEND_BASE + uri
+    const finalUri = BACKEND_URL_BASE + uri
     const response: Response = await fetch(finalUri, { 
       ...init, 
       mode: "cors",

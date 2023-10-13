@@ -54,10 +54,16 @@
 }
 
 .top-list-item > img {
-  height: 12rem;
+  height: 5rem;
   aspect-ratio: 1/1;
-
   border-radius: 0.5rem;
+}
+
+@media (min-width:481px) { 
+  /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */ 
+  .top-list-item > img {
+    height: 12rem;
+  }
 }
 
 .top-list-item-rating {

@@ -1,0 +1,22 @@
+.privacy-policy-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  margin: auto;
+  padding: 3rem 1rem;
+
+  text-align: left;
+  max-width: 600px;
+}
+
+.privacy-policy-container > h2 {
+  margin-bottom: 0.5rem;
+}
+
+
+.valid-from-date {
+  margin-top: 0;
+  font-size: large;
+  font-style: italic;
+}
