@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import { backendServiceInstance } from "src/api/BackendServiceImpl"
 import KmmkLogo from "src/assets/kmmk-logo.png"
+import { ImageWithBlur } from "./Common/ImageWithBlur"
 import { NavigationMenu } from "./Navigation/NavigationMenu"
 
 export const AppLayout: () => JSX.Element = () => {
@@ -17,12 +18,11 @@ export const AppLayout: () => JSX.Element = () => {
   return (
     <>
       <header>
-        <img 
-          width={200} 
-          src={KmmkLogo} 
-          onClick={() => { navigate('/') }}
-          alt="KMMK Logo"
-          ></img>
+        <ImageWithBlur
+          src={KmmkLogo}
+          blurRadiusPx={30}
+          className="header-logo" />
+
         <NavigationMenu />
       </header>
 

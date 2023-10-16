@@ -1,0 +1,12 @@
+.image-with-blur-wrapper {
+  position: relative;
+}
+
+.image-with-blur-blur-image, 
+.image-with-blur-normal-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

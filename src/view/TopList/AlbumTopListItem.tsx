@@ -3,6 +3,7 @@ import { Album } from "src/model/Album"
 import { ALBUM_RATING_MAX } from "src/util/constants"
 import { getAverageAlbumRating, getCoverArtUrl, roundToDecimals } from "src/util/util"
 import "src/view/TopList/AlbumTopListItem.css"
+import { ImageWithBlur } from "../Common/ImageWithBlur"
 import { IndividualRatings } from "./IndividualRatings"
 
 export interface AlbumTopListItemProps {
@@ -34,15 +35,18 @@ export const AlbumTopListItem: (
         className="list-item-background-image" 
         style={{ backgroundImage: `url(${coverArtUrl})` }} />
       
-      <div className="top-list-item-cover-art-wrapper">
-        <img className="top-list-item-cover-art saturated-blur" src={coverArtUrl} alt="Cover art blur" />
-        <img className="top-list-item-cover-art" src={coverArtUrl} alt="Cover art" />
-      </div>
+      <ImageWithBlur 
+        className="top-list-item-cover-art-wrapper" 
+        blurRadiusPx={30} 
+        src={coverArtUrl ?? ""}
+        blurImgClassName="top-list-item-cover-art saturated-blur"
+        imgClassName="top-list-item-cover-art" />
 
       <div className="top-list-item-info">
         
-        <h3>{ranking}. {album.title} ({album.releaseYear})</h3>
+        <h3>{ranking}. {album.title}</h3>
         <p>{album.artistName}</p>
+        <p>{album.releaseYear}</p>
         <div className="top-list-item-rating">
           <span className="top-list-item-rating-star material-symbols-rounded">star</span>
           <p className="top-list-item-rating-text">{ratingDisplay}</p>

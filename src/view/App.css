@@ -29,3 +29,8 @@ header > img {
 header > img:hover {
   cursor: pointer;
 }
+
+.header-logo {
+  width: 150px;
+  aspect-ratio: 2 / 1;
+}
