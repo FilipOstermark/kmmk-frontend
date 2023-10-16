@@ -21,7 +21,8 @@ export const AppLayout: () => JSX.Element = () => {
         <GlowImage
           imageSrc={KmmkLogo}
           blurRadiusPx={25}
-          wrapperClassName="header-logo" />
+          wrapperClassName="header-logo"
+          onClick={() => navigate("/toplist")} />
 
         <NavigationMenu />
       </header>

@@ -12,7 +12,8 @@ export const SearchSuggestion: (props: SearchSuggestionProps) => JSX.Element = (
   const releaseYear = releaseGroup["first-release-date"]?.split("-")[0]
   const artistCredit = releaseGroup["artist-credit"]
   const artist = artistCredit.map(cred => cred.name).join(" ")
-  const img = `http://coverartarchive.org/release-group/${releaseGroup.id}/front-250`
+  const img = 
+    `http://coverartarchive.org/release-group/${releaseGroup.id}/front-250`
   
   return (
     <div 
@@ -24,7 +25,9 @@ export const SearchSuggestion: (props: SearchSuggestionProps) => JSX.Element = (
         <p>{artist}</p>
         <p className="search-suggestion-mbid">{releaseGroup.id}</p>
       </div>
-      <div className="search-suggestion-coverart" style={{ backgroundImage: `url(${img})` }} />
+      <div 
+        className="search-suggestion-coverart" 
+        style={{ backgroundImage: `url(${img})` }} />
     </div>
   )
 }

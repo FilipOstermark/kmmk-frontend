@@ -22,15 +22,8 @@ header {
   padding: 0.5rem 1rem;
 }
 
-header > img {
-  filter: blur(0.1px);
-}
-
-header > img:hover {
-  cursor: pointer;
-}
-
 .header-logo {
   width: 150px;
   aspect-ratio: 2 / 1;
+  cursor: pointer;
 }
