@@ -1,12 +1,16 @@
-.image-with-blur-wrapper {
+.glow-image-wrapper {
   position: relative;
 }
 
-.image-with-blur-blur-image, 
-.image-with-blur-normal-image {
+.glow-image-glow,
+.glow-image-image {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.glow-image-glow {
+  opacity: 0.75;
 }

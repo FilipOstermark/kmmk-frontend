@@ -3,7 +3,7 @@ import { Album } from "src/model/Album"
 import { ALBUM_RATING_MAX } from "src/util/constants"
 import { getAverageAlbumRating, getCoverArtUrl, roundToDecimals } from "src/util/util"
 import "src/view/TopList/AlbumTopListItem.css"
-import { ImageWithBlur } from "../Common/ImageWithBlur"
+import { GlowImage } from "../Common/GlowImage"
 import { IndividualRatings } from "./IndividualRatings"
 
 export interface AlbumTopListItemProps {
@@ -35,12 +35,11 @@ export const AlbumTopListItem: (
         className="list-item-background-image" 
         style={{ backgroundImage: `url(${coverArtUrl})` }} />
       
-      <ImageWithBlur 
-        className="top-list-item-cover-art-wrapper" 
+      <GlowImage 
+        wrapperClassName="top-list-item-cover-art-wrapper" 
         blurRadiusPx={30} 
-        src={coverArtUrl ?? ""}
-        blurImgClassName="top-list-item-cover-art saturated-blur"
-        imgClassName="top-list-item-cover-art" />
+        imageSrc={coverArtUrl ?? ""}
+        imageClassName="top-list-item-cover-art" />
 
       <div className="top-list-item-info">
         
