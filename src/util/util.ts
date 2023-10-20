@@ -3,7 +3,7 @@ import { JWT } from "src/model/JWT"
 import { Rating } from "src/model/Rating"
 
 export const getCoverArtUrl: (mbid: string) => string | undefined = 
-  mbid => `http://coverartarchive.org/release-group/${mbid}/front-250`
+  mbid => `https://coverartarchive.org/release-group/${mbid}/front-250`
 
 export const sortAlbumsByRating = (
   array: Album[], 

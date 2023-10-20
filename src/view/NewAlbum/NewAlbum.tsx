@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import ReactDropdown from "react-dropdown"
 import { BackendError } from "src/api/BackendServiceImpl"
 import { Rating } from "src/model/Rating"
@@ -146,6 +146,14 @@ export const NewAlbum: () => JSX.Element = () => {
     )
   }
 
+  const ratingSelectorList = useMemo(() => {
+    return (<RatingSelectorList ratings={ratings} setRatings={setRatings} />)
+  }, [ratings, setRatings])
+
+  const searchResultsMemo = useMemo(() => {
+    return (<SearchResults searchResults={searchResults} />)
+  }, [searchResults])
+
   return (
     <div className="new-album-page">
       <h2>Nytt album</h2>
@@ -235,7 +243,7 @@ export const NewAlbum: () => JSX.Element = () => {
 
             <div className="new-album-input">
               <h2>Betyg ({averageUserRating}/{ALBUM_RATING_MAX})</h2>
-              <RatingSelectorList ratings={ratings} setRatings={setRatings} />
+              {ratingSelectorList}
             </div>
 
             <div className="new-album-input">
@@ -254,7 +262,7 @@ export const NewAlbum: () => JSX.Element = () => {
           </form>
         </div>
 
-        <SearchResults searchResults={searchResults} />
+        {searchResultsMemo}
 
       </div>
     </div>

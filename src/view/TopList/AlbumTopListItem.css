@@ -11,29 +11,33 @@
 
   border-radius: 1rem;
   padding: 0.5rem;
-  padding-top: 3rem;
-  transition: padding-top 600ms;
-}
-
-.top-list-item[data-is-expanded="true"] {
-  padding-top: 0.5rem;
+  padding-top: 1rem;
 }
 
 .list-item-background-image {
   position: absolute;
   z-index: -1;
 
-  top: 0;
-  bottom: 0;
-  right: 1rem;
-  left: 1rem;
+  width: 100%;
+  height: 100%;
 
   padding: 0;
   margin: 0;
 
   background-size: cover;
 
-  border-radius: 1rem;
+  /* 
+   * The following seems to improve animation performance
+   * Ref: https://stackoverflow.com/a/33875662/9977691
+   */
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+  transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
 
   filter: saturate(10) blur(80px);
 
@@ -135,9 +139,10 @@
   grid-row: 4;
   grid-column: 1 / span 3;
 
-  transform: translateX(-100%);
+  transform: translateX(-50%);
 
-  transition: grid-template-rows 500ms, opacity 1s, transform 700ms;
+  transition: grid-template-rows 700ms, opacity 700ms, transform 700ms;
+  will-change: grid-template-rows, opacity, transform;
 }
 
 .top-list-item-info-extra-wrapper[data-expanded="true"] {
@@ -208,11 +213,11 @@
     padding: 0 1rem;
   }
   .top-list-item-info-extra-wrapper {
+    z-index: -1;
     margin: 0;
 
-    transform: translateX(-25%);
+    transform: translateX(-20rem);
 
-    z-index: -1;
     grid-column: 2;
     grid-row: 3;
   }

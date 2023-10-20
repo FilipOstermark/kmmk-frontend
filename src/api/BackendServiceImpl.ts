@@ -79,7 +79,7 @@ export class BackendServiceImpl {
   }
 
   public loginWithGoogle() {
-    window.location.href='http://localhost:8080/oauth2/authorization/google'
+    window.location.href=`${BACKEND_URL_BASE}/oauth2/authorization/google`
   }
 
   public async getUserList(page: number = 0): Promise<User[]> {

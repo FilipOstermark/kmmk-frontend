@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { Album } from "src/model/Album"
 import { ALBUM_RATING_MAX } from "src/util/constants"
 import { getAverageAlbumRating, getCoverArtUrl, roundToDecimals, toggleBoolean } from "src/util/util"
@@ -23,7 +23,18 @@ export const AlbumTopListItem: (
   const ratingDisplay: string = `${averageUserRating} / ${ALBUM_RATING_MAX}`
   const coverArtUrl = getCoverArtUrl(album.mbid)
   const ranking = (index + 1).toString().padStart(2, "0")
-  const toggleExpanded = () => setIsExpanded(toggleBoolean)
+  const toggleExpanded = useCallback(() => setIsExpanded(toggleBoolean), [])
+
+  const coverArt = useMemo(() => {
+    return <GlowImage
+      wrapperClassName="top-list-item-cover-art-wrapper"
+      blurRadiusPx={30}
+      imageSrc={coverArtUrl ?? ""}
+      imageClassName="top-list-item-cover-art" />
+  }, [])
+  const individualRatings = useMemo(() => {
+    return <IndividualRatings ratings={album.ratings} />
+  }, [])
 
   return (
     <div 
@@ -35,11 +46,7 @@ export const AlbumTopListItem: (
         className="list-item-background-image" 
         style={{ backgroundImage: `url(${coverArtUrl})` }} />
       
-      <GlowImage 
-        wrapperClassName="top-list-item-cover-art-wrapper" 
-        blurRadiusPx={30} 
-        imageSrc={coverArtUrl ?? ""}
-        imageClassName="top-list-item-cover-art" />
+      {coverArt}
 
       <div className="top-list-item-info-header">
         <h3>{ranking}. {album.title}</h3>
@@ -58,7 +65,7 @@ export const AlbumTopListItem: (
       >
         <div className="top-list-item-info-extra">
           <h3>Individuella betyg</h3>
-          <IndividualRatings ratings={album.ratings} />
+          {individualRatings}
 
           <h3>Övrigt</h3>
           <ul className="top-list-info-list">
