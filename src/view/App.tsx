@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 import 'src/view/App.css'
 import { AppLayout } from 'src/view/AppLayout'
 import { NewAlbum } from 'src/view/NewAlbum/NewAlbum'
@@ -10,7 +10,7 @@ import { PrivacyPolicy } from './Privacy/PrivacyPolicy'
 import { AlbumTopList } from './TopList/AlbumTopList'
 
 const App: () => JSX.Element = () => (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path='/' element={<AppLayout />} >
           <Route path='login' element={<Login />} />
@@ -23,7 +23,7 @@ const App: () => JSX.Element = () => (
           <Route path='*' element={<PrivateRoute><AlbumTopList /></PrivateRoute>} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 
 export default App
