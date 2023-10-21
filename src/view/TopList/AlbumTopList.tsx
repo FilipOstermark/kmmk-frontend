@@ -7,6 +7,7 @@ import "src/view/TopList/AlbumTopList.css"
 import { AlbumTopListItem } from "src/view/TopList/AlbumTopListItem"
 
 export const AlbumTopList: () => JSX.Element = () => {
+  const [isLoading, setIsLoading] = useState(true)
   const [albumList, setAlbumList] = useState<Album[]>([])
   const navigate = useNavigate()
 
@@ -14,14 +15,17 @@ export const AlbumTopList: () => JSX.Element = () => {
     async function initAlbumList() {
       const albumList = await albumRepositoryInstance.getAll()
       setAlbumList(sortAlbumsByRating(albumList))
+      setIsLoading(false)
     }
 
-    initAlbumList().catch(error => { 
-      console.error("Failed to init album list", error) 
-    })
+    initAlbumList()
+      .then(() => setIsLoading(false))
+      .catch(error => console.error("Failed to init album list", error))
   }, [])
 
-  const albumListDisplay = albumList.map((album, index) => (
+  const display = isLoading ? 
+    (<h2>Laddar...</h2>) : 
+    albumList.map((album, index) => (
       <li key={album.id}>
         <AlbumTopListItem album={album} index={index} />
       </li>
@@ -31,7 +35,7 @@ export const AlbumTopList: () => JSX.Element = () => {
     <>
       <h1>Topplista</h1>
       <a onClick={() => { navigate('/new-album') }}>+ Nytt album</a>
-      <ol className="top-list">{albumListDisplay}</ol>
+      <ol className="top-list">{display}</ol>
       <a onClick={() => { navigate('/new-album') }}>+ Nytt album</a>
     </>
   )
