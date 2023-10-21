@@ -3,7 +3,7 @@ export const BACKEND_URL_BASE_LOCAL = `http://localhost:${BACKEND_PORT}/api/v1`
 export const BACKEND_URL_BASE = `https://kmmk-backend-vwghfpetha-lz.a.run.app:/api/v1`
 
 export const FRONTEND_TITLE = "Klagomurens Musikklubb"
-export const FRONTEND_URL_BASE = "https://filipostermark.github.io/kmmk"
+export const FRONTEND_URL_BASE = "https://filipostermark.github.io/kmmk-frontend"
 
 export const SUPPORT_EMAIL_ADDRESS = "klagomurensmusikklubb@gmail.com"
 
