@@ -3,7 +3,7 @@ import { PaginatedResponse } from "src/model/PaginatedResponse"
 import { ReleaseGroupSearchResult } from "src/model/ReleaseGroupSearchResult"
 import { User } from "src/model/User"
 import { authTokenRepositoryInstance } from "src/repository/AuthTokenRepository"
-import { BACKEND_URL_BASE } from "src/util/constants"
+import { BACKEND_URL_BASE, BACKEND_URL_BASE_LOCAL } from "src/util/constants"
 
 const HttpMethods = {
   GET: "GET",
@@ -48,7 +48,7 @@ export class BackendServiceImpl {
       headers.append("Authorization", `Bearer ${authToken}`)
     }
 
-    const finalUri = BACKEND_URL_BASE + uri
+    const finalUri = this.getBackendUrl() + uri
     const response: Response = await fetch(finalUri, { 
       ...init, 
       mode: "cors",
@@ -79,7 +79,7 @@ export class BackendServiceImpl {
   }
 
   public loginWithGoogle() {
-    window.location.href=`${BACKEND_URL_BASE}/oauth2/authorization/google`
+    window.location.href=`${this.getBackendUrl()}/oauth2/authorization/google`
   }
 
   public async getUserList(page: number = 0): Promise<User[]> {
@@ -139,6 +139,10 @@ export class BackendServiceImpl {
     authenticationRequiredHandler: AuthenticationRequiredHandler
   ): void {
     this.authenticationRequiredHandler = authenticationRequiredHandler
+  }
+
+  private getBackendUrl(): string {
+    return import.meta.env.DEV ? BACKEND_URL_BASE_LOCAL : BACKEND_URL_BASE
   }
 
 }

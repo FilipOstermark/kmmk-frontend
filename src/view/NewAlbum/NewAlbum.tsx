@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import ReactDropdown from "react-dropdown"
+import { useNavigate } from "react-router-dom"
 import { BackendError } from "src/api/BackendServiceImpl"
 import { Rating } from "src/model/Rating"
 import { ReleaseGroup } from "src/model/ReleaseGroup"
@@ -15,6 +16,8 @@ import { RatingSelectorList } from "./RatingSelectorList"
 import { SearchSuggestion } from "./SearchSuggestion"
 
 export const NewAlbum: () => JSX.Element = () => {
+  const navigate = useNavigate()
+
   const [searchResults, setSearchResults] = useState<ReleaseGroupSearchResult>(
     emptyReleaseGroupSearchResult()
   )
@@ -34,6 +37,8 @@ export const NewAlbum: () => JSX.Element = () => {
   const [ratings, setRatings] = useState<Rating[]>([])
   const [pickedBy, setPickedBy] = useState<User |null>(null)
   const [users, setUsers] = useState<User[]>([])
+
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false)
 
   useEffect(() => {
     async function fetchUsers(): Promise<void> {
@@ -128,6 +133,7 @@ export const NewAlbum: () => JSX.Element = () => {
     ? "-" : roundToDecimals(getAverageRating(ratings), 1)
 
   const submitNewAlbum = async () => {
+    setIsLoadingSubmit(true)
     await albumRepositoryInstance.add(
       {
         id: -1,
@@ -154,6 +160,10 @@ export const NewAlbum: () => JSX.Element = () => {
     return (<SearchResults searchResults={searchResults} />)
   }, [searchResults])
 
+  if (isLoadingSubmit) {
+    return (<h3>Laddar upp...</h3>)
+  }
+
   return (
     <div className="new-album-page">
       <h2>Nytt album</h2>
@@ -165,7 +175,16 @@ export const NewAlbum: () => JSX.Element = () => {
         
         <div className="new-album-input-section">
 
-          <form onSubmit={() => { submitNewAlbum().catch(() => { console.error('error') }) }}>
+          <form onSubmit={() => { 
+            submitNewAlbum()
+            .then(() => {
+              navigate("/")
+            })
+            .catch(() => { 
+              console.error('error')
+              setIsLoadingSubmit(false)
+            }) 
+          }}>
 
             <div className="new-album-input">
               <h2>Titel</h2>

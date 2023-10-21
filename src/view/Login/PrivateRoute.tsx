@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom"
-import { authTokenRepositoryInstance } from "src/repository/AuthTokenRepository"
+import { authenticationServiceInstance } from "src/service/AuthenticationService"
 
 interface PrivateRouteProps {
   children: JSX.Element
@@ -8,7 +8,7 @@ interface PrivateRouteProps {
 export const PrivateRoute: (props: PrivateRouteProps) => JSX.Element = (
   { children }: PrivateRouteProps
 ) => {
-  if (authTokenRepositoryInstance.getAuthToken()) {
+  if (authenticationServiceInstance.isLoggedIn()) {
     return children
   }
 

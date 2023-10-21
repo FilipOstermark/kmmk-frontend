@@ -15,7 +15,13 @@ export class AuthenticationServiceImpl implements AuthenticationService {
     this.authTokenRepository = authTokenRepository
   }
   
-  isLoggedIn: () => boolean = () => this.authTokenRepository.getAuthToken() != null
+  isLoggedIn: () => boolean = () => {
+    if (import.meta.env.DEV) {
+      return true
+    }
+
+    return this.authTokenRepository.getAuthToken() != null
+  }
   
   parsedJWT: () => JWT | null = () => {
     const authToken = this.authTokenRepository.getAuthToken()
