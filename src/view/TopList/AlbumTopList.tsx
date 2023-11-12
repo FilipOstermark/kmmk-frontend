@@ -32,11 +32,11 @@ export const AlbumTopList: () => JSX.Element = () => {
     ))
 
   return (
-    <>
+    <div className="top-list-wrapper">
       <h1>Topplista</h1>
       <a onClick={() => { navigate('/new-album') }}>+ Nytt album</a>
       <ol className="top-list">{display}</ol>
       <a onClick={() => { navigate('/new-album') }}>+ Nytt album</a>
-    </>
+    </div>
   )
 }

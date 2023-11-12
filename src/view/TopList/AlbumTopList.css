@@ -1,3 +1,7 @@
+.top-list-wrapper {
+  padding-bottom: 2rem;
+}
+
 .top-list {
   list-style: none;
   padding: 0;
