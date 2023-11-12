@@ -147,7 +147,8 @@ export const NewAlbum: () => JSX.Element = () => {
         summary: summary,
         ratings: ratings,
         listeningOccasion: occasion,
-        pickedBy: pickedBy
+        pickedBy: pickedBy,
+        coverArtUrl: null
       }
     )
   }

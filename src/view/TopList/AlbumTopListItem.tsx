@@ -21,7 +21,7 @@ export const AlbumTopListItem: (
     2
   )
   const ratingDisplay: string = `${averageUserRating} / ${ALBUM_RATING_MAX}`
-  const coverArtUrl = getCoverArtUrl(album.mbid)
+  const coverArtUrl = album.coverArtUrl ?? getCoverArtUrl(album.mbid)
   const ranking = (index + 1).toString().padStart(2, "0")
   const toggleExpanded = useCallback(() => setIsExpanded(toggleBoolean), [])
 

@@ -13,5 +13,6 @@ export interface Album {
   worstSongTitle: string,
   listeningOccasion: string,
   discussionDate: string,
-  pickedBy: User | null
+  pickedBy: User | null,
+  coverArtUrl: string | null
 }
