@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import RuleBook from "src/assets/MoHU.pdf"
 import { authenticationServiceInstance } from "src/service/AuthenticationService"
 import { toggleBoolean } from "src/util/util"
 import "src/view/Navigation/NavigationMenu.css"
@@ -26,7 +25,7 @@ export const NavigationMenu: () => JSX.Element | false = () => {
           <Link to='/new-album'>+ Nytt album</Link>
         </li>
         <li>
-          <a href={RuleBook}>Manifest</a>
+          <Link to='/manifest'>Manifest</Link>
         </li>
       </ul>
       <button 

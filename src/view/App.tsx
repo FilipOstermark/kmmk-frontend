@@ -6,6 +6,7 @@ import { AccountSettings } from './Account/AccountSettings'
 import { Login } from './Login/Login'
 import { OAuth2TokenHandler } from './Login/OAuth2TokenHandler'
 import { PrivateRoute } from './Login/PrivateRoute'
+import { Manifest } from './Manifest/Manifest'
 import { PrivacyPolicy } from './Privacy/PrivacyPolicy'
 import { AlbumTopList } from './TopList/AlbumTopList'
 
@@ -20,6 +21,7 @@ const App: () => JSX.Element = () => (
           <Route index path='' element={<PrivateRoute><AlbumTopList /></PrivateRoute>} />
           <Route path='new-album' element={<PrivateRoute><NewAlbum /></PrivateRoute>} />
           <Route path='account' element={<PrivateRoute><AccountSettings /></PrivateRoute>} />
+          <Route path='manifest' element={<PrivateRoute><Manifest /></PrivateRoute>} />
           <Route path='*' element={<PrivateRoute><AlbumTopList /></PrivateRoute>} />
         </Route>
       </Routes>
