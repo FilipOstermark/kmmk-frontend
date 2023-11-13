@@ -7,15 +7,14 @@
   margin: auto;
   margin-top: 1rem;
 
-  width: 70%;
+  width: 95%;
 }
 
 .account-settings-user-info {
   display: grid;
   grid-template-columns: 3fr 10fr;
   text-align: left;
-
-  width: fit-content;
+  text-wrap: nowrap;
 
   gap: 0 1rem;
 }
@@ -26,6 +25,7 @@
 
 .account-settings-danger-zone-title {
   margin-top: 0;
+  text-wrap: nowrap;
 }
 
 .account-settings-danger-zone {
