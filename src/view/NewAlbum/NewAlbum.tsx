@@ -260,7 +260,7 @@ export const NewAlbum: () => JSX.Element = () => {
                 {users.map(user => (<option key={"pickedBy-" + user.id} value={user.id}>{user.name}</option>))}
               </select>
             </div>
-
+            <hr />
             <button type="submit" className="new-album-submit-button">Spara</button>
           </form>
         </div>

@@ -107,6 +107,9 @@ hr {
 
 select {
   border: none;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   background-color: rgb(25, 25, 25);
+  border-radius: 2.5rem;
+  min-height: 2.5rem;
 }
+
