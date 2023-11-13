@@ -34,7 +34,7 @@ export const NavigationMenu: () => JSX.Element | false = () => {
         onClick={() => {setIsMenuExpanded(toggleBoolean)}}
       >
         <span className="top-list-item-button material-symbols-rounded">
-          menu
+          {isMenuExpanded ? "close" : "menu"}
         </span>
       </button>
     </nav>
