@@ -31,6 +31,7 @@ export const NavigationMenu: () => JSX.Element | false = () => {
       </ul>
       <button 
         className="navigation-menu-expand-button" 
+        data-is-expanded={isMenuExpanded}
         onClick={() => {setIsMenuExpanded(toggleBoolean)}}
       >
         <span className="top-list-item-button material-symbols-rounded">
