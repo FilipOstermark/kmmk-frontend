@@ -69,11 +69,11 @@ export const AlbumTopListItem: (
 
           <h3>Övrigt</h3>
           <ul className="top-list-info-list">
-            <li><p><b>Bästa låt:</b> {album.bestSongTitle}</p></li>
-            <li><p><b>Sämsta låt:</b> {album.worstSongTitle}</p></li>
-            <li><p><b>Lyssningstillfälle:</b> {album.listeningOccasion}</p></li>
-            <li><p><b>Sammanfattning:</b> {album.summary}</p></li>
-            <li><p><b>Väljare:</b> {album.pickedBy?.name}</p></li>
+            <li><p><b className="heavy">Bästa låt:</b> {album.bestSongTitle}</p></li>
+            <li><p><b className="heavy">Sämsta låt:</b> {album.worstSongTitle}</p></li>
+            <li><p><b className="heavy">Lyssningstillfälle:</b> {album.listeningOccasion}</p></li>
+            <li><p><b className="heavy">Sammanfattning:</b> {album.summary}</p></li>
+            <li><p><b className="heavy">Väljare:</b> {album.pickedBy?.name}</p></li>
           </ul>
         </div>
       </div>
