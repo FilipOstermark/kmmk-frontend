@@ -2,11 +2,11 @@ import { type ReleaseGroup } from "src/model/ReleaseGroup"
 
 export interface SearchSuggestionProps {
   releaseGroup: ReleaseGroup,
-  setSelectedReleaseGroup: (releaseGroup: ReleaseGroup) => void
+  onClick: () => void
 }
 
 export const SearchSuggestion: (props: SearchSuggestionProps) => JSX.Element = (
-  { releaseGroup, setSelectedReleaseGroup }: SearchSuggestionProps
+  { releaseGroup, onClick }: SearchSuggestionProps
 ) => {
 
   const releaseYear = releaseGroup["first-release-date"]?.split("-")[0]
@@ -19,7 +19,7 @@ export const SearchSuggestion: (props: SearchSuggestionProps) => JSX.Element = (
     <div 
     className="search-suggestion" 
     key={releaseGroup.id}
-    onClick={() => { setSelectedReleaseGroup(releaseGroup) }}>
+    onClick={onClick}>
       <div className="search-suggestion-info">
         <h3>{releaseGroup.title} ({releaseYear})</h3>
         <p>{artist}</p>

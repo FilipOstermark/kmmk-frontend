@@ -13,7 +13,7 @@ import { getAverageRating, roundToDecimals } from "src/util/util"
 import { useDebounce } from "usehooks-ts"
 import './NewAlbum.css'
 import { RatingSelectorList } from "./RatingSelectorList"
-import { SearchSuggestion } from "./SearchSuggestion"
+import { SearchResults } from "./SearchResults"
 
 export const NewAlbum: () => JSX.Element = () => {
   const navigate = useNavigate()
@@ -101,32 +101,6 @@ export const NewAlbum: () => JSX.Element = () => {
     setReleaseYear(year)
   }, [selectedReleaseGroup])
 
-  interface SearchResultsProps {
-    searchResults: ReleaseGroupSearchResult | undefined
-  }
-
-  const SearchResults: (props: SearchResultsProps) => JSX.Element = (
-    { searchResults }
-  ) => (
-      <div className="search-results-section">
-        <h2>Förslag ({searchResults?.["release-groups"].length ?? 0})</h2>
-        <div className="search-results-scroll">
-          <div className="search-results">
-            {
-              searchResults?.["release-groups"].map(
-                (releaseGroup: ReleaseGroup) => (
-                  <SearchSuggestion 
-                  key={releaseGroup.id}
-                  releaseGroup={releaseGroup} 
-                  setSelectedReleaseGroup={setSelectedReleaseGroup} />
-                )
-              )
-            }
-          </div>
-        </div>
-      </div>
-    )
-
   const img = `http://coverartarchive.org/release-group/${selectedReleaseGroup?.id}/front-250`
 
   const averageUserRating: "-" | number = (ratings.length == 0) 
@@ -158,7 +132,11 @@ export const NewAlbum: () => JSX.Element = () => {
   }, [ratings, setRatings])
 
   const searchResultsMemo = useMemo(() => {
-    return (<SearchResults searchResults={searchResults} />)
+    return (
+      <SearchResults 
+        searchResults={searchResults}
+        onClick={releaseGroup => setSelectedReleaseGroup(releaseGroup)} />
+    )
   }, [searchResults])
 
   if (isLoadingSubmit) {
@@ -195,7 +173,9 @@ export const NewAlbum: () => JSX.Element = () => {
                 value={albumTitle} 
                 onChange={e => { setAlbumTitle(e.target.value) }}/>
             </div>
-            
+
+            {searchResultsMemo}
+
             <div className="new-album-input">
               <h2>Artist</h2>
               <input 
@@ -281,9 +261,6 @@ export const NewAlbum: () => JSX.Element = () => {
             <button type="submit">Spara</button>
           </form>
         </div>
-
-        {searchResultsMemo}
-
       </div>
     </div>
   )

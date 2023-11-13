@@ -30,6 +30,11 @@ div::-webkit-scrollbar-track {
 
 div::-webkit-scrollbar {
   width: 0.5rem;
+  height: 0.5rem;
+}
+
+div::-webkit-scrollbar-track:horizontal {
+  margin: 0 0.5rem;
 }
 
 div::-webkit-scrollbar-thumb {
