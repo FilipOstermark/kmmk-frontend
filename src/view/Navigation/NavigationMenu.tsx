@@ -12,28 +12,36 @@ export const NavigationMenu: () => JSX.Element | false = () => {
     return false
   }
 
+  const LinkWrapper: (props: LinkWrapperProps) => JSX.Element = ({
+    to, children
+  }) => (
+    <Link to={to} onClick={() => setIsMenuExpanded(false)}>{children}</Link>
+  )
+
   return (
     <nav>
-      <ul className="navigation-menu-list" data-is-expanded={isMenuExpanded}>
-        <li>
-          <Link to="/account">Mitt konto</Link>
-        </li>
-        <li>
-          <Link to=''>Topplista</Link>
-        </li>
-        <li>
-          <Link to='/new-album'>+ Nytt album</Link>
-        </li>
-        <li>
-          <Link to='/manifest'>Manifest</Link>
-        </li>
+      <ul 
+        className="navigation-menu-list" 
+        data-is-expanded={isMenuExpanded}
+      >
+        <li><LinkWrapper to="/account">Mitt konto</LinkWrapper></li>
+        <li><LinkWrapper to=''>Topplista</LinkWrapper></li>
+        <li><LinkWrapper to='/new-album'>+ Nytt album</LinkWrapper></li>
+        <li><LinkWrapper to='/manifest'>Manifest</LinkWrapper></li>
       </ul>
       <button 
         className="navigation-menu-expand-button" 
         onClick={() => {setIsMenuExpanded(toggleBoolean)}}
       >
-        <span className="top-list-item-button material-symbols-rounded">menu</span>
+        <span className="top-list-item-button material-symbols-rounded">
+          menu
+        </span>
       </button>
     </nav>
   )
+}
+
+interface LinkWrapperProps {
+  to: string,
+  children: string
 }
