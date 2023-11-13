@@ -10,6 +10,7 @@ import { userRepositoryInstance } from "src/repository/UserRepository"
 import { ALBUM_RATING_MAX } from "src/util/constants"
 import { getAverageRating, roundToDecimals } from "src/util/util"
 import { useDebounce } from "usehooks-ts"
+import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner"
 import './NewAlbum.css'
 import { RatingSelectorList } from "./RatingSelectorList"
 import { SearchResults } from "./SearchResults"
@@ -139,7 +140,12 @@ export const NewAlbum: () => JSX.Element = () => {
   }, [searchResults])
 
   if (isLoadingSubmit) {
-    return (<h3>Laddar upp...</h3>)
+    return (
+      <>
+        <h3>Sparar nytt album...</h3>
+        <LoadingSpinner />
+      </>
+      )
   }
 
   return (

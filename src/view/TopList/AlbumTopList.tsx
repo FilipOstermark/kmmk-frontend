@@ -5,6 +5,7 @@ import { albumRepositoryInstance } from "src/repository/AlbumRepository"
 import { sortAlbumsByRating } from "src/util/util"
 import "src/view/TopList/AlbumTopList.css"
 import { AlbumTopListItem } from "src/view/TopList/AlbumTopListItem"
+import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner"
 
 export const AlbumTopList: () => JSX.Element = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -24,7 +25,12 @@ export const AlbumTopList: () => JSX.Element = () => {
   }, [])
 
   const display = isLoading ? 
-    (<h2>Laddar...</h2>) : 
+    (
+      <>
+        <h3>Läser in album...</h3>
+        <LoadingSpinner />
+      </>
+    ) : 
     albumList.map((album, index) => (
       <li key={album.id}>
         <AlbumTopListItem album={album} index={index} />
