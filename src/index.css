@@ -104,3 +104,9 @@ button:focus-visible {
 hr {
   margin: 0;
 }
+
+select {
+  border: none;
+  padding: 0.5rem;
+  background-color: rgb(25, 25, 25);
+}

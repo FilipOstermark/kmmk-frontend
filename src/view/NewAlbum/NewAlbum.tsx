@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react"
-import ReactDropdown from "react-dropdown"
 import { useNavigate } from "react-router-dom"
 import { BackendError } from "src/api/BackendServiceImpl"
 import { Rating } from "src/model/Rating"
@@ -242,23 +241,27 @@ export const NewAlbum: () => JSX.Element = () => {
             </div>
 
             <div className="new-album-input">
-              <h2>Betyg ({averageUserRating}/{ALBUM_RATING_MAX})</h2>
+              <h2>Betyg</h2>
               {ratingSelectorList}
+              <h3>Genomsnitt: ({averageUserRating}/{ALBUM_RATING_MAX})</h3>
             </div>
 
             <div className="new-album-input">
               <h2>Väljare</h2>
-              <ReactDropdown // TODO Replace with proper REQUIRED selector
-                options={users.map(user => new Option(user.name, user.id.toString()))} 
-                placeholder="Väljare" 
-                onChange={option => {
-                  const selectedUser = users.find(user => parseInt(option.value) == user.id) ?? null
-                  console.log("Selected 'pickedBy' user: ", JSON.stringify(selectedUser))
-                  setPickedBy(selectedUser)
-                }} />
+              <select
+                required
+                className="picked-by-select"
+                onChange={event => {
+                  const userId = parseInt(event.target.value)
+                  const user = users.find(u => u.id == userId)
+                  setPickedBy(user ?? null)
+              }}>
+                <option value="">-</option>
+                {users.map(user => (<option key={"pickedBy-" + user.id} value={user.id}>{user.name}</option>))}
+              </select>
             </div>
 
-            <button type="submit">Spara</button>
+            <button type="submit" className="new-album-submit-button">Spara</button>
           </form>
         </div>
       </div>
