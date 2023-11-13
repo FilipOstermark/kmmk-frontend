@@ -10,7 +10,7 @@ header > nav {
 }
 
 header > nav > ul {
-  position: relative;
+  position: fixed;
 
   display: flex;
   flex-direction: column;
@@ -45,7 +45,7 @@ header > nav > ul {
 }
 
 .navigation-menu-expand-button {
-  position: absolute;
+  position: fixed;
   top: 0.5rem;
   right: 0.5rem;
   z-index: 3;
@@ -81,6 +81,8 @@ header > nav > ul {
   }
 
   header > nav > ul {
+    position: relative;
+
     display: flex;
     flex-direction: row;
     list-style: none;
