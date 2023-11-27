@@ -74,6 +74,7 @@ export const AlbumTopListItem: (
             <li><p><b className="heavy">Lyssningstillfälle:</b> {album.listeningOccasion}</p></li>
             <li><p><b className="heavy">Sammanfattning:</b> {album.summary}</p></li>
             <li><p><b className="heavy">Väljare:</b> {album.pickedBy?.name}</p></li>
+            <li><p><b className="heavy">Diskussionsdatum:</b> {album.discussionDate}</p></li>
           </ul>
         </div>
       </div>
