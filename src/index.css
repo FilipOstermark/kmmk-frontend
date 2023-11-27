@@ -103,3 +103,7 @@ select {
   border-radius: 2.5rem;
   min-height: 2.5rem;
 }
+
+input {
+  color: rgba(255, 255, 255, 0.87);
+}
